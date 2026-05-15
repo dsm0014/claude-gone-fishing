@@ -13,6 +13,16 @@
 └── .gitignore
 scripts/
 └── install.sh             # deploys to ~/.claude; writes statusline-command.sh
+specs/
+├── 00-index.md            # spec index
+├── 01-gone-fishing-command.md
+├── 02-animation-system.md
+├── 03-catch-probability.md
+├── 04-fish-database.md
+├── 05-fishing-stats-command.md
+├── 06-persistence.md
+├── 07-fisherman-roster.md
+└── 08-leveling-system.md
 ```
 
 **Installed (`scripts/install.sh`):**
