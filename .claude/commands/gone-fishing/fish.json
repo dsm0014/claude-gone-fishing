@@ -228,7 +228,7 @@
     "ascii": "><((º>",
     "color": 251,
     "exp": 18,
-    "flavor": "Adapts well to turbid water where its darker cousin struggles."
+    "flavor": "Known as 'Sacalait' across Louisiana — a Cajun French name meaning 'bag of milk,' a nod to the fish's pale, flaky flesh."
   },
   {
     "id": "sauger",
@@ -261,7 +261,7 @@
     "ascii": "><((º>",
     "color": 94,
     "exp": 16,
-    "flavor": "Tolerates low-oxygen, weedy water that other sunfish avoid."
+    "flavor": "Called 'Goggle-eye' across Louisiana for its large, vivid red-orange eyes; a scrappy brawler of the cypress bayous."
   },
   {
     "id": "golden-shiner",
@@ -833,7 +833,7 @@
     "ascii": ">~((((º>",
     "color": 58,
     "exp": 50,
-    "flavor": "A living relic — the sole surviving species of an ancient Jurassic lineage."
+    "flavor": "Known as 'Choupique' in Louisiana — the Cajun name for this sole survivor of an ancient Jurassic fish lineage."
   },
   {
     "id": "paddlefish",
@@ -1153,5 +1153,126 @@
     "color": 247,
     "exp": 230,
     "flavor": "The largest freshwater fish ever recorded, exceeding 24 feet and 3,500 pounds."
+  },
+  {
+    "id": "blue-catfish",
+    "common": "Blue Catfish",
+    "scientific": "Ictalurus furcatus",
+    "habitat": "freshwater",
+    "rarity": "common",
+    "ascii": ">~(((º>",
+    "color": 67,
+    "exp": 28,
+    "flavor": "The largest catfish species native to North America; giants exceeding 100 pounds are not uncommon in the Atchafalaya basin."
+  },
+  {
+    "id": "yellow-bass",
+    "common": "Yellow Bass",
+    "scientific": "Morone mississippiensis",
+    "habitat": "freshwater",
+    "rarity": "common",
+    "ascii": "><(||º>",
+    "color": 226,
+    "exp": 20,
+    "flavor": "A native of the Mississippi basin with offset horizontal stripes on golden flanks; schools tight in open water."
+  },
+  {
+    "id": "atlantic-croaker",
+    "common": "Atlantic Croaker",
+    "scientific": "Micropogonias undulatus",
+    "habitat": "brackish",
+    "rarity": "common",
+    "ascii": "><((·º>",
+    "color": 214,
+    "exp": 22,
+    "flavor": "Named for the loud, frog-like drumming made by its swim bladder muscles — a signature sound of Louisiana estuaries at night."
+  },
+  {
+    "id": "gulf-menhaden",
+    "common": "Gulf Menhaden",
+    "scientific": "Brevoortia patronus",
+    "habitat": "saltwater",
+    "rarity": "common",
+    "ascii": "><(º>",
+    "color": 248,
+    "exp": 15,
+    "flavor": "The most commercially important fish on the Gulf Coast; vast filter-feeding schools darken the water and sustain the entire food web."
+  },
+  {
+    "id": "black-drum",
+    "common": "Black Drum",
+    "scientific": "Pogonias cromis",
+    "habitat": "brackish",
+    "rarity": "uncommon",
+    "ascii": "><)))º>",
+    "color": 236,
+    "exp": 55,
+    "flavor": "The largest drum species in North America; its deep, resonant spawning drum is audible through boat hulls near oyster reefs."
+  },
+  {
+    "id": "gulf-flounder",
+    "common": "Gulf Flounder",
+    "scientific": "Paralichthys albigutta",
+    "habitat": "brackish",
+    "rarity": "uncommon",
+    "ascii": "~><(º>",
+    "color": 136,
+    "exp": 50,
+    "flavor": "Gigged by lamplight in Louisiana tidal passes at night; lies perfectly camouflaged on sandy bottoms, invisible from above."
+  },
+  {
+    "id": "tripletail",
+    "common": "Tripletail",
+    "scientific": "Lobotes surinamensis",
+    "habitat": "saltwater",
+    "rarity": "uncommon",
+    "ascii": "><}}º>",
+    "color": 94,
+    "exp": 60,
+    "flavor": "Drifts motionless near crab trap buoys and floating debris, mimicking a dead leaf with uncanny accuracy."
+  },
+  {
+    "id": "spotted-gar",
+    "common": "Spotted Gar",
+    "scientific": "Lepisosteus oculatus",
+    "habitat": "freshwater",
+    "rarity": "rare",
+    "ascii": ">---(º>",
+    "color": 64,
+    "exp": 95,
+    "flavor": "Covered in dark circular spots from snout to tail; a coastal marsh specialist more compact than its longnose cousin."
+  },
+  {
+    "id": "spanish-mackerel",
+    "common": "Spanish Mackerel",
+    "scientific": "Scomberomorus maculatus",
+    "habitat": "saltwater",
+    "rarity": "rare",
+    "ascii": ">~((·º>",
+    "color": 33,
+    "exp": 100,
+    "flavor": "Arrives each spring with warming Gulf currents; fast-running schools make it a prime target along the barrier island passes."
+  },
+  {
+    "id": "king-mackerel",
+    "common": "King Mackerel",
+    "scientific": "Scomberomorus cavalla",
+    "habitat": "saltwater",
+    "rarity": "rare",
+    "ascii": ">~(((·º>",
+    "color": 32,
+    "exp": 110,
+    "flavor": "A 'smoker king' over 40 pounds is a Gulf Coast trophy; its first run will strip a reel in seconds."
+  },
+  {
+    "id": "gulf-sturgeon",
+    "common": "Gulf Sturgeon",
+    "scientific": "Acipenser oxyrinchus desotoi",
+    "habitat": "brackish",
+    "rarity": "legendary",
+    "ascii": ">==(((º>",
+    "color": 241,
+    "exp": 200,
+    "flavor": "Federally threatened; summers feeding in Gulf shallows, winters fasting in freshwater rivers — a living relic of the Cretaceous."
   }
 ]
