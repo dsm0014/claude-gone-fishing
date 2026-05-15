@@ -1,6 +1,6 @@
 # Spec 03 — Catch Probability
 
-**Status:** `TODO`
+**Status:** `IN PROGRESS`
 **Depends on:** [04 Fish Database](./04-fish-database.md), [06 Persistence Layer](./06-persistence.md)
 
 ---

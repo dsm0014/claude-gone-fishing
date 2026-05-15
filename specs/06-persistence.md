@@ -1,6 +1,6 @@
 # Spec 06 — Persistence Layer
 
-**Status:** `TODO`
+**Status:** `DONE`
 
 ---
 
@@ -11,9 +11,10 @@ Defines how catch data is stored and read across sessions. All data lives in the
 ## Files
 
 ```
-~/.claude/skills/gone-fishing/refs/
+~/.claude/commands/refs/gone-fishing/refs/
 ├── catches.json    # cumulative catch log
-└── profile.json    # selected fisherman character
+├── profile.json    # selected fisherman character
+└── state.json      # current fisherman state for the statusline
 ```
 
 The `refs/` directory is created on first run if it does not exist.
@@ -82,6 +83,32 @@ Stores the user's currently selected fisherman (see [Spec 07](./07-fisherman-ros
 | `assignedAt` | string | ISO 8601 UTC timestamp of when this character was assigned |
 
 Same atomic write rules (tmp → rename) and corruption handling apply.
+
+## state.json Schema
+
+Stores the fisherman's current state so the statusline script can read it without invoking Claude:
+
+```json
+{
+  "version": 1,
+  "fishermanName": "Grizzled Pete",
+  "state": "idle",
+  "catch": null
+}
+```
+
+When a fish is caught, `state` becomes `"caught"` and `catch` is populated:
+
+```json
+{
+  "version": 1,
+  "fishermanName": "Grizzled Pete",
+  "state": "caught",
+  "catch": { "fishId": "rainbow-trout", "common": "Rainbow Trout", "ascii": "><(((º>", "exp": 30 }
+}
+```
+
+Same atomic write rules (tmp → rename) apply. The statusline script reads this file on every refresh tick — it must never be left in a partially-written state.
 
 ## No Cloud Sync
 
