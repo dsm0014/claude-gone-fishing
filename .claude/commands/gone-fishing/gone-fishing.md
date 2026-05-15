@@ -52,7 +52,7 @@ Caught state:
   "version": 1,
   "fishermanName": "<Name>",
   "state": "caught",
-  "catch": { "fishId": "<id>", "common": "<common>", "ascii": "<ascii>", "exp": <exp> }
+  "catch": { "fishId": "<id>", "common": "<common>", "ascii": "<ascii>", "color": <color>, "exp": <exp> }
 }
 ```
 
