@@ -1,6 +1,6 @@
 # Spec 04 — Fish Database
 
-**Status:** `IN PROGRESS`
+**Status:** `COMPLETE`
 
 ---
 
