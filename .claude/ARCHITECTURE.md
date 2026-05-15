@@ -13,6 +13,16 @@
 └── .gitignore
 scripts/
 └── install.sh             # deploys to ~/.claude; writes statusline-command.sh
+specs/
+├── 00-index.md            # spec index
+├── 01-gone-fishing-command.md
+├── 02-animation-system.md
+├── 03-catch-probability.md
+├── 04-fish-database.md
+├── 05-fishing-stats-command.md
+├── 06-persistence.md
+├── 07-fisherman-roster.md
+└── 08-leveling-system.md
 ```
 
 **Installed (`scripts/install.sh`):**
@@ -44,9 +54,9 @@ Playable characters. Each entry: `id`, `name`, `type`, `backstory` (2–4 senten
 **Current state:** 1 character (Grizzled Pete); frames not yet in data file. Target: 40 visually distinct characters. See Spec 07.
 
 ### `fish.json`
-Catchable species. Each entry: `id`, `common`, `scientific`, `habitat`, `rarity`, `ascii` (≤22 chars, facing left), `exp`, optional `flavor`.
+Catchable species. Each entry: `id`, `common`, `scientific`, `habitat`, `rarity`, `ascii` (≤22 chars, facing left), `color` (ANSI 256-color code), `exp`, optional `flavor`.
 
-**Current state:** 1 fish (Rainbow Trout). Target: 100+ across all rarity tiers. See Spec 04.
+**Current state:** 105 species across all 6 habitat types and 4 rarity tiers (57 common / 32 uncommon / 13 rare / 3 legendary). See Spec 04.
 
 ### Animation frames
 Four frame states per character (arrays of strings, one per terminal row):
@@ -68,5 +78,5 @@ EXP is derived at runtime by summing `catches[].exp` in `catches.json` — never
 ### Persistence (`refs/`)
 - `catches.json` — append-only log: `{ version, catches: [{ fishId, common, rarity, exp, timestamp }] }`
 - `profile.json` — active character: `{ version, fishermanId, assignedAt }`
-- `state.json` — statusline state: `{ version, fishermanName, state, catch }`
+- `state.json` — statusline state: `{ version, fishermanName, state, catch }` where caught `catch` includes `{ fishId, common, ascii, color, exp }`
 - All writes are atomic: write to `.tmp`, then rename.

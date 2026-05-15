@@ -64,6 +64,10 @@ if [ -f "$STATE_FILE" ]; then
     if [ "$state" = "caught" ]; then
       fish_name=$(jq -r '.catch.common // ""' "$STATE_FILE" 2>/dev/null)
       fish_ascii=$(jq -r '.catch.ascii // ""' "$STATE_FILE" 2>/dev/null)
+      fish_color=$(jq -r '.catch.color // ""' "$STATE_FILE" 2>/dev/null)
+      if [ -n "$fish_color" ]; then
+        fish_ascii="$(printf '\033[38;5;%sm%s\033[0m' "$fish_color" "$fish_ascii")"
+      fi
       fishing="🎣 ${fisher}  ~|!!  ${fish_name} ${fish_ascii}"
     else
       fishing="🎣 ${fisher}  ~|°"
