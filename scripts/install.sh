@@ -79,11 +79,22 @@ echo "  statusline-command.sh written"
 
 # ── settings.json ────────────────────────────────────────────────────────────
 echo "  updating settings.json..."
+FISHING_PERMS='[
+  "Read(~/.claude/commands/refs/gone-fishing/**)",
+  "Write(~/.claude/commands/refs/gone-fishing/refs/**)",
+  "Bash(mv ~/.claude/commands/refs/gone-fishing/refs/*.tmp ~/.claude/commands/refs/gone-fishing/refs/*)"
+]'
 if [ -f "$SETTINGS_FILE" ]; then
   tmp=$(mktemp)
-  jq --arg s "$STATUSLINE_SCRIPT" '. + {statusLine: {type: "command", command: $s}}' "$SETTINGS_FILE" > "$tmp" && mv "$tmp" "$SETTINGS_FILE"
+  jq --arg s "$STATUSLINE_SCRIPT" --argjson perms "$FISHING_PERMS" '
+    .statusLine = {type: "command", command: $s} |
+    .permissions.allow = ((.permissions.allow // []) + $perms | unique)
+  ' "$SETTINGS_FILE" > "$tmp" && mv "$tmp" "$SETTINGS_FILE"
 else
-  printf '{\n  "statusLine": { "type": "command", "command": "%s" }\n}\n' "$STATUSLINE_SCRIPT" > "$SETTINGS_FILE"
+  jq -n --arg s "$STATUSLINE_SCRIPT" --argjson perms "$FISHING_PERMS" '{
+    statusLine: {type: "command", command: $s},
+    permissions: {allow: $perms}
+  }' > "$SETTINGS_FILE"
 fi
 echo "  settings.json updated"
 

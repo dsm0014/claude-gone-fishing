@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(~/.claude/commands/refs/gone-fishing/**)",
+      "Write(~/.claude/commands/refs/gone-fishing/refs/**)",
+      "Bash(mv ~/.claude/commands/refs/gone-fishing/refs/*.tmp ~/.claude/commands/refs/gone-fishing/refs/*)"
+    ]
+  }
+}
