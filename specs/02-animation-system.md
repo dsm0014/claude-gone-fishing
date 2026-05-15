@@ -11,50 +11,86 @@ Defines the ASCII art frames and sequencing logic for the fisherman overlay. All
 
 ## Frame States
 
+All frames share the same bounding box: **8 rows tall, ~22 columns wide**. Characters must stay in the same position across all four states so transitions look like pose changes, not redraws.
+
 ### 1. Idle
-The fisherman stands at the water's edge, line in the water. This is the default state between turns.
+The fisherman stands at the water's edge, rod extended, line dropped into the water. This is the default state between turns.
 
 ```
-     |
-     |
- \o/ |
-  |  ~
- / \ ~~~
+          |
+   _     /|
+  (o)   / |
+   \>--'  |
+   /\   ~~|
+  /  \~~~~|
+      ~~~~~
+      *
 ```
+
+- Row 1: bare fishing line hanging from rod tip
+- Rows 2–3: head and rod arm (rod angled up-right with `/`)
+- Row 4: torso leaning into cast (`\>--'` connects body to rod)
+- Rows 5–6: legs with water surface rising behind them
+- Row 7: deeper water
+- Row 8: lure/bobber (`*`) resting at depth
 
 Rendered statically — no looping animation in idle to avoid terminal noise.
 
 ### 2. Hooking
-Triggered immediately when a catch is rolled. Line goes taut. Display for ~1 second (or 1 render cycle).
+Triggered immediately when a catch is rolled. Line snaps taut and horizontal. Display for ~1 second (or 1 render cycle).
 
 ```
-     !!
-     |/
- \o/ |
-  |  *<
- / \ ~~~
+  !!
+   _     /
+  (!)   /
+   \>--/
+   /\  ----*
+  /  \~~~~~
+      ~~~~~~
 ```
+
+- `!!` above head signals the strike
+- Head changes to `(!)` (eyes wide, startled)
+- Rod bends: `/` goes steeper (fish pulling down and away)
+- Line goes horizontal: `----*` shows the taut line with fish at end
+- Water unchanged — fish is below surface, just hooked
 
 ### 3. Retrieving
-Animated: cycle 2–3 frames showing the reel-in motion. Each frame held for ~0.5 seconds.
+Animated: 2–3 frames showing the reel-in motion. Each frame held for ~0.5 seconds. Fish (`><`) rises toward the surface between frames.
 
 ```
-Frame A        Frame B
-   \               |
-    \|             |/
-\o/ |          \o/ |
- |  ~<          |  ~<
-/ \  ~~        / \  ~~
+Frame A (fish deep, line still taut):   Frame B (fish at surface, reel almost done):
+
+   _     /                                 _     /
+  (o)   /|                                (o)  =/
+   \>--' |                                 \>--'
+   /\  ><|                                 /\  ><~
+  /  \~~~|                                /  \~~~~
+      ~~~~~                                   ~~~~~
 ```
+
+- Frame A: `><` fish symbol appears at bottom of taut line (`><|`)
+- Frame B: `=` on rod shows reel tension; fish at surface (`><~`) with wake
+- The fisherman's expression returns to `(o)` — focused, not panicked
+- Body posture stays consistent; only line angle and fish position change
 
 ### 4. Display (Catch Reveal)
-Fisherman holds up the caught fish. This frame includes the fish's ASCII art and name. Held for ~3 seconds before returning to idle.
+Fisherman raises both arms to hold the catch overhead. Fish ASCII art and name rendered to the right. Held for ~3 seconds before returning to idle.
 
 ```
-  \o/  ><(((º>
-   |   Atlantic Bluefin Tuna
-  / \
+  \(o)/  ><(((o>
+   _|_   Bluefin Tuna
+   )|(
+   /\   ~~|
+  /  \~~~~|
+      ~~~~~
 ```
+
+- Arms raised: `\(o)/` instead of the normal rod-holding pose
+- Fish art (`><(((o>`) appears directly to the right of the raised hands
+- Fish name on the line below, aligned with the art
+- `)|( ` for the torso — same narrow waist as the idle/hooking poses, not a wide body shape
+- Water column (`~~|`, `~~~~|`) stays on the right at the same position as all other frames — the fisherman is still standing at the bank, not out at sea
 
 The fish ASCII art is loaded from the fish database entry (see [Spec 04](./04-fish-database.md)). Each fish has its own art embedded in the database.
 
