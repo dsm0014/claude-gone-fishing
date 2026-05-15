@@ -1,6 +1,6 @@
 # Spec 01 — /gone-fishing Command
 
-**Status:** `TODO`
+**Status:** `IN PROGRESS`
 **Depends on:** [02 Animation System](./02-animation-system.md), [03 Catch Probability](./03-catch-probability.md), [07 Fisherman Roster](./07-fisherman-roster.md)
 
 ---
@@ -31,7 +31,7 @@ After every conversation turn completes:
 
 ## Skill File
 
-**Path:** `~/.claude/skills/gone-fishing/gone-fishing.md`
+**Path:** `~/.claude/commands/gone-fishing.md`
 
 The skill definition must describe:
 - How to render each animation frame using `process.stdout.write` or equivalent ANSI output.

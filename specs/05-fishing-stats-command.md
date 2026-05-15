@@ -1,6 +1,6 @@
 # Spec 05 — /fishing-stats Command
 
-**Status:** `TODO`
+**Status:** `IN PROGRESS`
 **Depends on:** [06 Persistence Layer](./06-persistence.md), [04 Fish Database](./04-fish-database.md), [07 Fisherman Roster](./07-fisherman-roster.md), [08 Leveling System](./08-leveling-system.md)
 
 ---
@@ -13,7 +13,7 @@ The `/fishing-stats` slash command displays a summary of the user's lifetime fis
 
 ### Activation
 - User invokes `/fishing-stats` at any time (does not require `/gone-fishing` to be active).
-- Claude reads the catch log from `~/.claude/skills/gone-fishing/refs/` and renders the stats view inline in the conversation.
+- Claude reads the catch log from `~/.claude/commands/refs/gone-fishing/refs/` and renders the stats view inline in the conversation.
 
 ### Stats View Layout
 
@@ -76,9 +76,9 @@ The `/fishing-stats` slash command displays a summary of the user's lifetime fis
 
 ## Skill File
 
-**Path:** `~/.claude/skills/gone-fishing/fishing-stats.md`
+**Path:** `~/.claude/commands/fishing-stats.md`
 
-The skill reads `~/.claude/skills/gone-fishing/refs/catches.json`, aggregates the data, and renders the stats table inline.
+The skill reads `~/.claude/commands/refs/gone-fishing/refs/catches.json`, aggregates the data, and renders the stats table inline.
 
 ## Acceptance Criteria
 

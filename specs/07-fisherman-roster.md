@@ -1,6 +1,6 @@
 # Spec 07 — Fisherman Roster
 
-**Status:** `TODO`
+**Status:** `IN PROGRESS`
 **Depends on:** [02 Animation System](./02-animation-system.md), [06 Persistence Layer](./06-persistence.md)
 
 ---
@@ -16,14 +16,14 @@ On first run, the user is assigned a randomly selected fisherman character from 
 | Skill | Path | Description |
 |-------|------|-------------|
 | `/gone-fishing` | (existing) | On first run, triggers character selection before activation |
-| `/new-fisherman` | `~/.claude/skills/gone-fishing/new-fisherman.md` | Re-rolls to a new random character; shows the new character's name and intro |
+| `/new-fisherman` | `~/.claude/commands/new-fisherman.md` | Re-rolls to a new random character; shows the new character's name and intro |
 
 ---
 
 ## Character Selection Flow
 
 ### First Run
-1. Check `~/.claude/skills/gone-fishing/refs/profile.json` for a saved `fishermanId`.
+1. Check `~/.claude/commands/refs/gone-fishing/refs/profile.json` for a saved `fishermanId`.
 2. If none exists: randomly select a character from `fishermen.json`, save it, then display a brief intro card showing the character's name and the first sentence of their backstory.
 3. Proceed with normal `/gone-fishing` activation using the selected character's frames.
 
@@ -37,7 +37,7 @@ On first run, the user is assigned a randomly selected fisherman character from 
 
 ## Data File
 
-**Path:** `~/.claude/skills/gone-fishing/fishermen.json`
+**Path:** `~/.claude/commands/refs/gone-fishing/fishermen.json`
 
 ```json
 [
@@ -182,7 +182,7 @@ The currently selected fisherman is stored in `profile.json` (see [Spec 06](./06
 }
 ```
 
-`profile.json` lives alongside `catches.json` in `~/.claude/skills/gone-fishing/refs/`.
+`profile.json` lives alongside `catches.json` in `~/.claude/commands/refs/gone-fishing/refs/`.
 
 ---
 

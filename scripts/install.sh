@@ -81,9 +81,9 @@ echo "  statusline-command.sh written"
 echo "  updating settings.json..."
 if [ -f "$SETTINGS_FILE" ]; then
   tmp=$(mktemp)
-  jq --arg s "$STATUSLINE_SCRIPT" '. + {statusLine: {type: command, command: $s}}' "$SETTINGS_FILE" > "$tmp" && mv "$tmp" "$SETTINGS_FILE"
+  jq --arg s "$STATUSLINE_SCRIPT" '. + {statusLine: {type: "command", command: $s}}' "$SETTINGS_FILE" > "$tmp" && mv "$tmp" "$SETTINGS_FILE"
 else
-  printf '{\n  "statusLine": { "command": "%s" }\n}\n' "$STATUSLINE_SCRIPT" > "$SETTINGS_FILE"
+  printf '{\n  "statusLine": { "type": "command", "command": "%s" }\n}\n' "$STATUSLINE_SCRIPT" > "$SETTINGS_FILE"
 fi
 echo "  settings.json updated"
 

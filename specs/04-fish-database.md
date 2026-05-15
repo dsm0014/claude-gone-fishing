@@ -1,6 +1,6 @@
 # Spec 04 — Fish Database
 
-**Status:** `TODO`
+**Status:** `IN PROGRESS`
 
 ---
 
@@ -19,7 +19,7 @@ Defines the structure and content requirements for the pool of catchable fish. A
 
 Stored as a JSON array at:
 ```
-~/.claude/skills/gone-fishing/fish.json
+~/.claude/commands/refs/gone-fishing/fish.json
 ```
 
 Each entry:
