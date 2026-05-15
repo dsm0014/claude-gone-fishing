@@ -6,6 +6,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><(((º>",
+    "color": 75,
     "exp": 30,
     "flavor": "Named for the pink-to-red lateral stripe that shimmers in sunlight."
   },
@@ -16,6 +17,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><((º>",
+    "color": 148,
     "exp": 15,
     "flavor": "The most commonly caught freshwater fish in North America."
   },
@@ -26,6 +28,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><{{{º>",
+    "color": 64,
     "exp": 35,
     "flavor": "An ambush predator known for its explosive surface strikes."
   },
@@ -36,6 +39,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><((|º>",
+    "color": 220,
     "exp": 20,
     "flavor": "Distinctive vertical black bars decorate its golden flanks."
   },
@@ -46,6 +50,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": ">~(((º>",
+    "color": 243,
     "exp": 25,
     "flavor": "Uses sensitive barbels to locate prey in murky river bottoms."
   },
@@ -56,6 +61,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><)))º>",
+    "color": 178,
     "exp": 20,
     "flavor": "Introduced worldwide, it can live over 50 years in the right conditions."
   },
@@ -66,6 +72,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><(((^>",
+    "color": 180,
     "exp": 35,
     "flavor": "Its tapetum lucidum makes it an exceptional low-light hunter."
   },
@@ -76,6 +83,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><((º>",
+    "color": 240,
     "exp": 18,
     "flavor": "Schooling fish prized for their mild, flaky white flesh."
   },
@@ -86,6 +94,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><{((º>",
+    "color": 130,
     "exp": 32,
     "flavor": "Pound for pound, considered one of the hardest-fighting freshwater fish."
   },
@@ -96,6 +105,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": ">---(º>",
+    "color": 34,
     "exp": 38,
     "flavor": "An apex predator with a mouthful of backward-pointing teeth."
   },
@@ -106,6 +116,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><(((º>",
+    "color": 65,
     "exp": 28,
     "flavor": "Technically a char, it requires cold, pristine water to thrive."
   },
@@ -116,6 +127,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><((º>",
+    "color": 214,
     "exp": 15,
     "flavor": "Among the most colorful freshwater fish in North America."
   },
@@ -126,6 +138,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><(|º>",
+    "color": 255,
     "exp": 22,
     "flavor": "Runs in massive schools during spring spawning migrations."
   },
@@ -136,6 +149,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><))º>",
+    "color": 252,
     "exp": 20,
     "flavor": "Named for the drumming sound produced by its swim bladder muscles."
   },
@@ -146,6 +160,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><(º>",
+    "color": 130,
     "exp": 16,
     "flavor": "Its vivid red eyes glow like embers in clear stream water."
   },
@@ -156,6 +171,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": ">~((º>",
+    "color": 94,
     "exp": 18,
     "flavor": "Navigates silty pond bottoms using taste receptors spread across its body."
   },
@@ -166,6 +182,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><((|º>",
+    "color": 248,
     "exp": 20,
     "flavor": "One of the most farmed fish on Earth, native to African river systems."
   },
@@ -176,6 +193,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><((º>",
+    "color": 148,
     "exp": 17,
     "flavor": "Nicknamed 'shellcracker' for its habit of crushing snails with molar-like teeth."
   },
@@ -186,6 +204,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><{(º>",
+    "color": 70,
     "exp": 28,
     "flavor": "Often mistaken for largemouth bass, but prefers faster, clearer water."
   },
@@ -196,6 +215,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><)))º>",
+    "color": 251,
     "exp": 22,
     "flavor": "Introduced to control aquatic vegetation; can consume its own body weight daily."
   },
@@ -206,6 +226,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><((º>",
+    "color": 251,
     "exp": 18,
     "flavor": "Adapts well to turbid water where its darker cousin struggles."
   },
@@ -216,6 +237,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><((^>",
+    "color": 136,
     "exp": 25,
     "flavor": "A close cousin of walleye, it thrives in large, silty river systems."
   },
@@ -226,6 +248,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": ">-----(º>",
+    "color": 58,
     "exp": 35,
     "flavor": "A living fossil unchanged for over 100 million years."
   },
@@ -236,6 +259,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><((º>",
+    "color": 94,
     "exp": 16,
     "flavor": "Tolerates low-oxygen, weedy water that other sunfish avoid."
   },
@@ -246,6 +270,7 @@
     "habitat": "freshwater",
     "rarity": "common",
     "ascii": "><(º>",
+    "color": 220,
     "exp": 15,
     "flavor": "A schooling baitfish whose golden flanks catch sunlight near the surface."
   },
@@ -256,6 +281,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "><(((º>",
+    "color": 144,
     "exp": 30,
     "flavor": "Entire empires were built on the cod trade of the North Atlantic."
   },
@@ -266,6 +292,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": ">~((º>",
+    "color": 33,
     "exp": 22,
     "flavor": "Iridescent green-blue back and tiger-stripe flanks distinguish this fast schooling fish."
   },
@@ -276,6 +303,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "><(((º>",
+    "color": 24,
     "exp": 28,
     "flavor": "A protogynous hermaphrodite — most start female and transition to male with age."
   },
@@ -286,6 +314,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "~><(º>",
+    "color": 130,
     "exp": 25,
     "flavor": "Both eyes migrate to one side of the head as juveniles flatten onto the seafloor."
   },
@@ -296,6 +325,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": ">~(((º>",
+    "color": 39,
     "exp": 30,
     "flavor": "A pack predator notorious for slashing through baitfish schools with reckless fury."
   },
@@ -306,6 +336,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "><(((º>",
+    "color": 196,
     "exp": 32,
     "flavor": "One of the most commercially important reef fish in the Gulf of Mexico."
   },
@@ -316,6 +347,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "><((º>",
+    "color": 220,
     "exp": 28,
     "flavor": "Sought for its rich, buttery flesh — among the finest table fish on the Atlantic coast."
   },
@@ -326,6 +358,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": ">~((º>",
+    "color": 251,
     "exp": 24,
     "flavor": "Named for its tender mouth tissue, which tears easily on a hook."
   },
@@ -336,6 +369,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "><(º>",
+    "color": 250,
     "exp": 15,
     "flavor": "A small croaker named for the distinctive dark shoulder spot behind its head."
   },
@@ -346,6 +380,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "><(º>",
+    "color": 252,
     "exp": 15,
     "flavor": "One of the most abundant fish on Earth, forming schools of billions."
   },
@@ -356,6 +391,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "><(((º>",
+    "color": 58,
     "exp": 22,
     "flavor": "The unsung workhorse of the North Atlantic; often sold as imitation crab."
   },
@@ -366,6 +402,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "><(º>",
+    "color": 252,
     "exp": 15,
     "flavor": "Smoked and tinned, it has been a staple food fish in Europe for centuries."
   },
@@ -376,6 +413,7 @@
     "habitat": "arctic",
     "rarity": "common",
     "ascii": "><(º>",
+    "color": 252,
     "exp": 15,
     "flavor": "Its mass beach spawnings are a breathtaking spectacle in Iceland and Newfoundland."
   },
@@ -386,6 +424,7 @@
     "habitat": "arctic",
     "rarity": "common",
     "ascii": "><(((º>",
+    "color": 209,
     "exp": 35,
     "flavor": "The northernmost freshwater fish on the planet, surviving under Arctic ice."
   },
@@ -396,6 +435,7 @@
     "habitat": "tropical",
     "rarity": "common",
     "ascii": "><|º>",
+    "color": 208,
     "exp": 20,
     "flavor": "Lives symbiotically within anemones that would sting any other fish."
   },
@@ -406,6 +446,7 @@
     "habitat": "tropical",
     "rarity": "common",
     "ascii": "><(º>",
+    "color": 130,
     "exp": 15,
     "flavor": "Uses modified pelvic fins as a suction cup to cling to rocks in surge zones."
   },
@@ -416,6 +457,7 @@
     "habitat": "tropical",
     "rarity": "common",
     "ascii": "><||(º>",
+    "color": 226,
     "exp": 18,
     "flavor": "Named for the five bold black bars on its sides, resembling military insignia."
   },
@@ -426,6 +468,7 @@
     "habitat": "tropical",
     "rarity": "common",
     "ascii": "><(º>",
+    "color": 27,
     "exp": 16,
     "flavor": "Aggressively farms patches of algae on coral reefs, driving off much larger fish."
   },
@@ -436,6 +479,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "><(((º>",
+    "color": 244,
     "exp": 25,
     "flavor": "Identified by a distinctive dark thumbprint mark above the pectoral fin."
   },
@@ -446,6 +490,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": ">{{(º>",
+    "color": 94,
     "exp": 16,
     "flavor": "A bottom-dwelling ambush hunter with spiny gill covers that deter predators."
   },
@@ -456,6 +501,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "O>(º>",
+    "color": 250,
     "exp": 35,
     "flavor": "The heaviest bony fish alive, sometimes basking on its side at the surface."
   },
@@ -466,6 +512,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "><(º>",
+    "color": 114,
     "exp": 15,
     "flavor": "A bait-stealing nuisance to pier anglers up and down the Atlantic coast."
   },
@@ -476,6 +523,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "><(|º>",
+    "color": 137,
     "exp": 17,
     "flavor": "Rests motionless on sandy bottoms, perfectly camouflaged against the substrate."
   },
@@ -486,6 +534,7 @@
     "habitat": "brackish",
     "rarity": "common",
     "ascii": "><|||º>",
+    "color": 252,
     "exp": 38,
     "flavor": "Migrates between freshwater spawning rivers and saltwater feeding grounds each year."
   },
@@ -496,6 +545,7 @@
     "habitat": "brackish",
     "rarity": "common",
     "ascii": "><(·(º>",
+    "color": 255,
     "exp": 28,
     "flavor": "Not a true trout — it's a drum whose spots fade with age."
   },
@@ -506,6 +556,7 @@
     "habitat": "brackish",
     "rarity": "common",
     "ascii": ">-((|º>",
+    "color": 252,
     "exp": 36,
     "flavor": "A sleek inshore predator with a distinctive black lateral line."
   },
@@ -516,6 +567,7 @@
     "habitat": "brackish",
     "rarity": "common",
     "ascii": "><||º>",
+    "color": 251,
     "exp": 30,
     "flavor": "Human-like teeth allow it to crush oysters, barnacles, and crabs."
   },
@@ -526,6 +578,7 @@
     "habitat": "brackish",
     "rarity": "common",
     "ascii": "><(((º>",
+    "color": 248,
     "exp": 18,
     "flavor": "Leaps repeatedly out of the water for reasons scientists still debate."
   },
@@ -536,6 +589,7 @@
     "habitat": "deep-sea",
     "rarity": "common",
     "ascii": "·><(º>",
+    "color": 57,
     "exp": 35,
     "flavor": "Performs the largest daily migration on Earth, rising to feed at night."
   },
@@ -546,6 +600,7 @@
     "habitat": "deep-sea",
     "rarity": "common",
     "ascii": "><((~>",
+    "color": 238,
     "exp": 38,
     "flavor": "The most abundant deep-sea fish, drifting slowly above abyssal plains."
   },
@@ -556,6 +611,7 @@
     "habitat": "deep-sea",
     "rarity": "common",
     "ascii": ">||||(º>",
+    "color": 237,
     "exp": 32,
     "flavor": "May be the most numerous vertebrate on the planet by sheer count."
   },
@@ -566,6 +622,7 @@
     "habitat": "saltwater",
     "rarity": "common",
     "ascii": "><(º>",
+    "color": 252,
     "exp": 15,
     "flavor": "Spawns in such massive numbers that the sea turns milky white with milt."
   },
@@ -576,6 +633,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": "><((((º>",
+    "color": 27,
     "exp": 65,
     "flavor": "Bright yellow dorsal and anal fins distinguish it from its bluefin cousin."
   },
@@ -586,6 +644,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": "><{((º>",
+    "color": 46,
     "exp": 70,
     "flavor": "Among the fastest-growing fish alive, reaching full size in less than a year."
   },
@@ -596,6 +655,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": ">--(((º>",
+    "color": 33,
     "exp": 75,
     "flavor": "One of the fastest fish in the ocean, capable of bursts exceeding 60 mph."
   },
@@ -606,6 +666,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": "><(((|º>",
+    "color": 178,
     "exp": 60,
     "flavor": "A powerful, hard-pulling fish that lives around offshore reefs and wrecks."
   },
@@ -616,6 +677,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": ">-(((º>",
+    "color": 94,
     "exp": 65,
     "flavor": "Often mistaken for a shark when seen from above due to its dark dorsal stripe."
   },
@@ -626,6 +688,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": "><(((·º>",
+    "color": 166,
     "exp": 55,
     "flavor": "The eyespot near the tail confuses predators about which end is the head."
   },
@@ -636,6 +699,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": "><((º>",
+    "color": 253,
     "exp": 70,
     "flavor": "Considered one of the most challenging flats fish to fool with a fly."
   },
@@ -646,6 +710,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": "><{{{º>",
+    "color": 160,
     "exp": 55,
     "flavor": "Creates and maintains its own habitat by vacuuming sand from reef cavities."
   },
@@ -656,6 +721,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": "~>((((º>",
+    "color": 130,
     "exp": 68,
     "flavor": "The largest flatfish in the world, capable of exceeding 700 pounds."
   },
@@ -666,6 +732,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": ">--(º>",
+    "color": 255,
     "exp": 65,
     "flavor": "A ghost of the flats — silver, fast, and extraordinarily wary of shadows."
   },
@@ -676,6 +743,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": ">----(º>",
+    "color": 252,
     "exp": 60,
     "flavor": "Attracted to shiny objects, it strikes with explosive speed and razor-sharp teeth."
   },
@@ -686,6 +754,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": "><{(º>",
+    "color": 142,
     "exp": 55,
     "flavor": "Herds mullet schools against the shoreline in a relentless feeding frenzy."
   },
@@ -696,6 +765,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": "><||(((º>",
+    "color": 244,
     "exp": 75,
     "flavor": "Its seven dramatic dorsal spines fan out like a rooster's comb when alarmed."
   },
@@ -706,6 +776,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": "><{((º>",
+    "color": 248,
     "exp": 72,
     "flavor": "Has been filmed leaping from the water to snatch birds out of mid-flight."
   },
@@ -716,6 +787,7 @@
     "habitat": "freshwater",
     "rarity": "uncommon",
     "ascii": "><(((º>",
+    "color": 74,
     "exp": 60,
     "flavor": "The sea-run form of rainbow trout — anadromous and notoriously acrobatic."
   },
@@ -726,6 +798,7 @@
     "habitat": "freshwater",
     "rarity": "uncommon",
     "ascii": "><((((º>",
+    "color": 208,
     "exp": 70,
     "flavor": "The largest Pacific salmon, nicknamed 'king' for its size and fight."
   },
@@ -736,6 +809,7 @@
     "habitat": "freshwater",
     "rarity": "uncommon",
     "ascii": ">---((º>",
+    "color": 58,
     "exp": 75,
     "flavor": "The 'fish of ten thousand casts' — elusive, large, and built like a torpedo."
   },
@@ -746,6 +820,7 @@
     "habitat": "freshwater",
     "rarity": "uncommon",
     "ascii": "><(((º>",
+    "color": 240,
     "exp": 55,
     "flavor": "Retreats to frigid depths in summer, only rising to shallower water in fall."
     },
@@ -756,6 +831,7 @@
     "habitat": "freshwater",
     "rarity": "uncommon",
     "ascii": ">~((((º>",
+    "color": 58,
     "exp": 50,
     "flavor": "A living relic — the sole surviving species of an ancient Jurassic lineage."
   },
@@ -766,6 +842,7 @@
     "habitat": "freshwater",
     "rarity": "uncommon",
     "ascii": ">----(º>",
+    "color": 247,
     "exp": 80,
     "flavor": "Filter-feeds on zooplankton using a rostrum packed with electroreceptors."
   },
@@ -776,6 +853,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": "><(((º>",
+    "color": 238,
     "exp": 58,
     "flavor": "Its exceptionally rich, buttery flesh has earned it the name 'black cod.'"
   },
@@ -786,6 +864,7 @@
     "habitat": "saltwater",
     "rarity": "uncommon",
     "ascii": ">~(((º>",
+    "color": 64,
     "exp": 62,
     "flavor": "Occasionally has teal-green flesh due to a bile pigment — safe to eat regardless."
   },
@@ -796,6 +875,7 @@
     "habitat": "brackish",
     "rarity": "uncommon",
     "ascii": "><((((º>",
+    "color": 255,
     "exp": 78,
     "flavor": "Can breathe atmospheric air and launches into spectacular aerial leaps when hooked."
   },
@@ -806,6 +886,7 @@
     "habitat": "tropical",
     "rarity": "uncommon",
     "ascii": "><|||º>",
+    "color": 196,
     "exp": 55,
     "flavor": "An invasive reef predator with venomous dorsal spines and a voracious appetite."
   },
@@ -816,6 +897,7 @@
     "habitat": "tropical",
     "rarity": "uncommon",
     "ascii": "><{|º>",
+    "color": 51,
     "exp": 50,
     "flavor": "Locks its stout dorsal spine upright to wedge itself immovably in crevices."
   },
@@ -826,6 +908,7 @@
     "habitat": "tropical",
     "rarity": "uncommon",
     "ascii": "O><(º>",
+    "color": 136,
     "exp": 48,
     "flavor": "Inflates to a spiny sphere by gulping water when threatened."
   },
@@ -836,6 +919,7 @@
     "habitat": "tropical",
     "rarity": "uncommon",
     "ascii": "~~~(º>",
+    "color": 34,
     "exp": 60,
     "flavor": "Has a second set of jaws in its throat — called pharyngeal jaws — to drag prey inward."
   },
@@ -846,6 +930,7 @@
     "habitat": "tropical",
     "rarity": "uncommon",
     "ascii": "><{(º>",
+    "color": 33,
     "exp": 65,
     "flavor": "Develops a pronounced forehead hump with age; can live over 30 years."
   },
@@ -856,6 +941,7 @@
     "habitat": "deep-sea",
     "rarity": "uncommon",
     "ascii": ">|||(º>",
+    "color": 237,
     "exp": 70,
     "flavor": "Its fangs are so long they cannot fit inside its mouth when closed."
   },
@@ -866,6 +952,7 @@
     "habitat": "deep-sea",
     "rarity": "uncommon",
     "ascii": "Ö><(º>",
+    "color": 57,
     "exp": 65,
     "flavor": "Tubular eyes rotate to peer upward through its transparent fluid-filled head."
   },
@@ -876,6 +963,7 @@
     "habitat": "deep-sea",
     "rarity": "uncommon",
     "ascii": ">~|||(º>",
+    "color": 232,
     "exp": 72,
     "flavor": "Produces far-red bioluminescence invisible to most prey, used as a private spotlight."
   },
@@ -886,6 +974,7 @@
     "habitat": "deep-sea",
     "rarity": "uncommon",
     "ascii": ">|(|(º>",
+    "color": 232,
     "exp": 68,
     "flavor": "Proportionally the largest teeth of any fish — its fangs rest in sockets on the brain case."
   },
@@ -896,6 +985,7 @@
     "habitat": "saltwater",
     "rarity": "rare",
     "ascii": "><(((((º>",
+    "color": 21,
     "exp": 120,
     "flavor": "Warm-blooded and capable of exceeding 1,000 pounds — the apex of open-ocean predators."
   },
@@ -906,6 +996,7 @@
     "habitat": "saltwater",
     "rarity": "rare",
     "ascii": ">-----(º>",
+    "color": 32,
     "exp": 130,
     "flavor": "Uses its bill to slash through schools of fish, then circles back to eat the stunned."
   },
@@ -916,6 +1007,7 @@
     "habitat": "saltwater",
     "rarity": "rare",
     "ascii": ">----(((º>",
+    "color": 27,
     "exp": 140,
     "flavor": "The pinnacle of big-game fishing; a 1,000-pound marlin is a career achievement."
   },
@@ -926,6 +1018,7 @@
     "habitat": "deep-sea",
     "rarity": "rare",
     "ascii": ">~(( º>",
+    "color": 218,
     "exp": 110,
     "flavor": "Its infamous saggy appearance only occurs at surface pressure; at depth it looks normal."
   },
@@ -936,6 +1029,7 @@
     "habitat": "deep-sea",
     "rarity": "rare",
     "ascii": ">((((((~>",
+    "color": 236,
     "exp": 115,
     "flavor": "Its enormous hinged jaw opens wide enough to engulf prey larger than itself."
   },
@@ -946,6 +1040,7 @@
     "habitat": "deep-sea",
     "rarity": "rare",
     "ascii": ">|{((º>",
+    "color": 232,
     "exp": 125,
     "flavor": "The male bites the female and fuses permanently, sharing her bloodstream forever."
   },
@@ -956,6 +1051,7 @@
     "habitat": "freshwater",
     "rarity": "rare",
     "ascii": "><(((((º>",
+    "color": 28,
     "exp": 135,
     "flavor": "One of the largest freshwater fish on Earth; must surface to breathe air."
   },
@@ -966,6 +1062,7 @@
     "habitat": "freshwater",
     "rarity": "rare",
     "ascii": ">=====(º>",
+    "color": 58,
     "exp": 130,
     "flavor": "A barrel-shaped ambush predator that has barely changed in 100 million years."
   },
@@ -976,6 +1073,7 @@
     "habitat": "freshwater",
     "rarity": "rare",
     "ascii": ">---(((º>",
+    "color": 136,
     "exp": 140,
     "flavor": "The world's largest salmonid, revered in Russia as the 'river wolf.'"
   },
@@ -986,6 +1084,7 @@
     "habitat": "freshwater",
     "rarity": "rare",
     "ascii": ">===(((º>",
+    "color": 241,
     "exp": 120,
     "flavor": "Can live over 150 years — some individuals alive today were born before the Civil War."
   },
@@ -996,6 +1095,7 @@
     "habitat": "brackish",
     "rarity": "rare",
     "ascii": ">===((º>",
+    "color": 241,
     "exp": 115,
     "flavor": "Existed alongside the dinosaurs; leaps fully from the water, baffling scientists."
   },
@@ -1006,6 +1106,7 @@
     "habitat": "freshwater",
     "rarity": "rare",
     "ascii": "><{{{(º>",
+    "color": 220,
     "exp": 125,
     "flavor": "Nicknamed 'tiger of the river' for its ferocity and blazing gold flanks."
   },
@@ -1016,6 +1117,7 @@
     "habitat": "tropical",
     "rarity": "rare",
     "ascii": "~~~~(º>",
+    "color": 34,
     "exp": 110,
     "flavor": "The largest moray eel species, capable of ambushing reef sharks."
   },
@@ -1026,6 +1128,7 @@
     "habitat": "deep-sea",
     "rarity": "legendary",
     "ascii": ">---===---º>",
+    "color": 189,
     "exp": 220,
     "flavor": "The longest bony fish on Earth; believed to be the origin of sea-serpent legends."
   },
@@ -1036,6 +1139,7 @@
     "habitat": "deep-sea",
     "rarity": "legendary",
     "ascii": "><{{{{{º>",
+    "color": 25,
     "exp": 250,
     "flavor": "Thought extinct for 66 million years until a live specimen was caught in 1938."
   },
@@ -1046,6 +1150,7 @@
     "habitat": "brackish",
     "rarity": "legendary",
     "ascii": ">=====(((º>",
+    "color": 247,
     "exp": 230,
     "flavor": "The largest freshwater fish ever recorded, exceeding 24 feet and 3,500 pounds."
   }
