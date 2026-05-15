@@ -21,10 +21,9 @@ The fisherman stands at the water's edge, rod extended, line dropped into the wa
    _     /|
   (o)   / |
    \>--'  |
-   /\   ~~|
-  /  \~~~~|
-      ~~~~~
-      *
+   /\   ~~|~~
+  /  \~~~~|~~
+      ~~~~*~~
 ```
 
 - Row 1: bare fishing line hanging from rod tip
@@ -40,13 +39,13 @@ Rendered statically — no looping animation in idle to avoid terminal noise.
 Triggered immediately when a catch is rolled. Line snaps taut and horizontal. Display for ~1 second (or 1 render cycle).
 
 ```
-  !!
-   _     /
-  (!)   /
-   \>--/
-   /\  ----*
-  /  \~~~~~
-      ~~~~~~
+  !!      |
+   _     /|
+  (!)   / |
+   \>--'  |
+   /\   ~~|~~
+  /  \~~~~|~~
+      ~~~XvX~
 ```
 
 - `!!` above head signals the strike
@@ -61,36 +60,36 @@ Animated: 2–3 frames showing the reel-in motion. Each frame held for ~0.5 seco
 ```
 Frame A (fish deep, line still taut):   Frame B (fish at surface, reel almost done):
 
-   _     /                                 _     /
-  (o)   /|                                (o)  =/
-   \>--' |                                 \>--'
-   /\  ><|                                 /\  ><~
-  /  \~~~|                                /  \~~~~
-      ~~~~~                                   ~~~~~
+   _     /\                                 _     /\
+  (o)   / |                                (o)   / |
+   \>--'  |                                 \>--'  |
+   /*\  ~~|~~                               /*\  ~>^<~
+  /   \~~~|~~                              /   \~~~~~~
+       ~~>^<~                                   ~~~~~~
 ```
 
-- Frame A: `><` fish symbol appears at bottom of taut line (`><|`)
-- Frame B: `=` on rod shows reel tension; fish at surface (`><~`) with wake
+- Frame A: `>^<` fish symbol appears at bottom of taut line
+- Frame B: `=` on rod shows reel tension; fish moves up the three water layers
 - The fisherman's expression returns to `(o)` — focused, not panicked
 - Body posture stays consistent; only line angle and fish position change
 
 ### 4. Display (Catch Reveal)
-Fisherman raises both arms to hold the catch overhead. Fish ASCII art and name rendered to the right. Held for ~3 seconds before returning to idle.
+Fisherman raises both arms to hold the catch overhead. Fish ASCII art rendered above raised hands and name rendered to the right. Held for ~5 seconds before returning to idle.
 
 ```
-  \(o)/  ><(((o>
-   _|_   Bluefin Tuna
-   )|(
-   /\   ~~|
-  /  \~~~~|
-      ~~~~~
+ ><(((o>
+  \(o)/  Bluefin Tuna
+   \*/   
+   /*\   ~~~~~~
+  /   \~~~~~~~~
+       ~~~~~~~~
 ```
 
 - Arms raised: `\(o)/` instead of the normal rod-holding pose
 - Fish art (`><(((o>`) appears directly to the right of the raised hands
 - Fish name on the line below, aligned with the art
-- `)|( ` for the torso — same narrow waist as the idle/hooking poses, not a wide body shape
-- Water column (`~~|`, `~~~~|`) stays on the right at the same position as all other frames — the fisherman is still standing at the bank, not out at sea
+- `\*/ ` for the forward facing torso — same waist as the idle/hooking poses
+- Water columns (`~~`, `~~~~`) stay on the right at the same position as all other frames — the fisherman is still standing at the bank, not out at sea
 
 The fish ASCII art is loaded from the fish database entry (see [Spec 04](./04-fish-database.md)). Each fish has its own art embedded in the database.
 
