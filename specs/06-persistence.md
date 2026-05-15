@@ -104,9 +104,17 @@ When a fish is caught, `state` becomes `"caught"` and `catch` is populated:
   "version": 1,
   "fishermanName": "Grizzled Pete",
   "state": "caught",
-  "catch": { "fishId": "rainbow-trout", "common": "Rainbow Trout", "ascii": "><(((º>", "exp": 30 }
+  "catch": { "fishId": "rainbow-trout", "common": "Rainbow Trout", "ascii": "><(((º>", "color": 75, "exp": 30 }
 }
 ```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `catch.fishId` | string | Matches `id` in fish database |
+| `catch.common` | string | Common name, denormalized |
+| `catch.ascii` | string | ASCII art, snapshotted at catch time |
+| `catch.color` | number | ANSI 256-color code from fish database; used by the statusline script to colorize `ascii` |
+| `catch.exp` | number | EXP awarded, snapshotted at catch time |
 
 Same atomic write rules (tmp → rename) apply. The statusline script reads this file on every refresh tick — it must never be left in a partially-written state.
 
