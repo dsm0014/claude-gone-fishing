@@ -32,7 +32,9 @@ The `/fishing-stats` slash command displays a summary of the user's lifetime fis
 ║  doesn't ask questions.              ║
 ╠══════════════════════════════════════╣
 ║  Level:   12  Carbon Fiber Rod       ║
-║  Lv.12  ████████████░░░░░░░░  800 / 1100 XP ║
+║  Lv.12  ████████████░░░░░░░░         ║
+║                                      ║
+║  800 / 1100 XP                       ║
 ╠══════════════════════════════════════╣
 ║  Total Catches:        42            ║
 ║  Unique Species:       31 / 100      ║
