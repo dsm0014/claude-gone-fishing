@@ -12,3 +12,5 @@ All feature specs for `claude-gone-fishing`. Statuses: `TODO` | `IN PROGRESS` | 
 | 06 | [Persistence Layer](./06-persistence.md) | DONE |
 | 07 | [Fisherman Roster](./07-fisherman-roster.md) | IN PROGRESS |
 | 08 | [Leveling System](./08-leveling-system.md) | TODO |
+| 09 | [Southeast Louisiana Regional Fish](./09-southeast-louisiana-fish.md) | TODO |
+| 10 | [Regional Human Fishermen](./10-regional-fishermen.md) | TODO |
