@@ -31,6 +31,7 @@ Each entry:
   "habitat": "saltwater",
   "rarity": "uncommon",
   "ascii": "><(((º>",
+  "color": 21,
   "exp": 90,
   "flavor": "One of the largest bony fish in the sea."
 }
@@ -44,6 +45,7 @@ Each entry:
 | `habitat` | Yes | `freshwater` \| `saltwater` \| `brackish` \| `deep-sea` \| `tropical` \| `arctic` |
 | `rarity` | Yes | `common` \| `uncommon` \| `rare` \| `legendary` — drives weighted catch probability (see [Spec 03](./03-catch-probability.md)) |
 | `ascii` | Yes | Single-line ASCII art of the fish (fits in ~20 chars) |
+| `color` | Yes | ANSI 256-color code (integer 0–255) for the fish's primary color; applied as `\x1b[38;5;{color}m{ascii}\x1b[0m` in color-capable terminals |
 | `exp` | Yes | EXP awarded on catch — see [Spec 08](./08-leveling-system.md) for tier ranges |
 | `flavor` | No | One sentence of flavor text shown in stats |
 
@@ -67,6 +69,12 @@ Legendary species should be genuinely extraordinary — coelacanth, oarfish, gia
 - Orientation: fish facing left (toward the fisherman's hand).
 - Common motifs: `><(((º>`, `><{{{{*>`, `>°))彡`, `><(((^>`
 
+## Color Guidelines
+
+- `color` is an ANSI 256-color code (0–255). See the [256-color chart](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
+- Choose the most visually distinctive color for the species (body, stripe, or dominant hue — whichever is most recognizable).
+- Terminals that don't support 256-color fall back silently to the plain `ascii` value; skills must always check for color support before applying the code.
+
 ## Sample Species List (non-exhaustive)
 
 Freshwater: Largemouth Bass, Rainbow Trout, Catfish, Bluegill, Carp, Pike, Walleye, Perch, Crappie, Muskellunge, Brook Trout, Steelhead, Sturgeon, Gar, Bowfin, Tilapia, Sunfish
@@ -85,6 +93,7 @@ Rare/Unusual: Coelacanth, Paddlefish, Arapaima, Alligator Gar, Giant Trevally, R
 
 - [ ] At least 100 entries in `fish.json`.
 - [ ] Every entry passes schema validation (all required fields present, `id` is unique).
+- [ ] Every entry has a `color` field with an integer in the range 0–255.
 - [ ] Every `ascii` field is ≤ 22 characters wide.
 - [ ] Species span all 6 habitat types.
 - [ ] All species are real, verifiable fish.
