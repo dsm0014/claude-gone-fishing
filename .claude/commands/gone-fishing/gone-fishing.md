@@ -24,7 +24,8 @@ You are the gone-fishing skill. When invoked, activate the fisherman overlay for
    - Display the intro card (see format below)
 2. Load the fisherman entry from `fishermen.json` matching the saved `fishermanId`
 3. Write the initial idle state to `refs/state.json` (see State file below)
-4. Confirm activation with one line: `🎣 Gone fishing — <Name> is on the line. Watch the status bar.`
+4. Start the animation background process (see Animation system below)
+5. Confirm activation with one line: `🎣 Gone fishing — <Name> is on the line. Watch the status bar.`
 
 ## Intro card format (first run only)
 
@@ -78,6 +79,60 @@ After every conversation turn completes, you MUST:
    ```
    🎣 Fish on the line!  <Common Name>  <ascii>  (+<exp> EXP)
    ```
+
+## Animation system
+
+The ASCII fisherman overlay runs as a background bash process at the far-right edge of the terminal (requires ≥120 columns; silently skipped if narrower).
+
+### Starting the animation loop
+
+After completing activation steps 1–3, run this bash block:
+
+```bash
+ANIM_LIB="$HOME/.claude/commands/refs/gone-fishing/lib"
+ANIM_STATE_FILE="$(mktemp /tmp/gone-fishing-anim-XXXXXX)"
+TERM_COLS=$(tput cols 2>/dev/null || echo 0)
+bash "$ANIM_LIB/anim_loop.sh" "$ANIM_STATE_FILE" "$fisherman_id" "$TERM_COLS" &
+ANIM_PID=$!
+# Persist PID and mailbox path so they survive across turns
+printf '%s\n%s\n' "$ANIM_PID" "$ANIM_STATE_FILE" > /tmp/gone-fishing-anim-pid
+```
+
+Set a cleanup trap so the process is killed if the shell exits:
+```bash
+trap 'rm -f "$ANIM_STATE_FILE" /tmp/gone-fishing-anim-pid; kill "$ANIM_PID" 2>/dev/null' EXIT
+```
+
+### Triggering the catch animation
+
+When the per-turn catch roll hits, before printing the notification, write the mailbox to trigger the hooking→retrieving→display animation sequence:
+
+```bash
+# Read PID/mailbox from the tracking file if not already in scope
+if [[ -z "${ANIM_STATE_FILE:-}" ]]; then
+  ANIM_PID=$(head -1 /tmp/gone-fishing-anim-pid 2>/dev/null || true)
+  ANIM_STATE_FILE=$(sed -n '2p' /tmp/gone-fishing-anim-pid 2>/dev/null || true)
+fi
+
+# Write the mailbox: line 1 = state:color:name, line 2 = fish ASCII art
+if [[ -n "${ANIM_STATE_FILE:-}" && -f "$ANIM_STATE_FILE" ]]; then
+  printf 'hooking:%s:%s\n%s\n' "$fish_color" "$fish_common" "$fish_ascii" > "$ANIM_STATE_FILE"
+fi
+```
+
+Where `$fish_color`, `$fish_common`, and `$fish_ascii` come from the selected fish entry in `fish.json`.
+
+### Session end / deactivation
+
+To stop the animation:
+```bash
+if [[ -f /tmp/gone-fishing-anim-pid ]]; then
+  ANIM_PID=$(head -1 /tmp/gone-fishing-anim-pid 2>/dev/null || true)
+  ANIM_STATE_FILE=$(sed -n '2p' /tmp/gone-fishing-anim-pid 2>/dev/null || true)
+  kill "$ANIM_PID" 2>/dev/null
+  rm -f "$ANIM_STATE_FILE" /tmp/gone-fishing-anim-pid
+fi
+```
 
 ## Error handling
 
