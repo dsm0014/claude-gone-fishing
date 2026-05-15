@@ -107,22 +107,41 @@ Then render the updated EXP bar showing the new level (possibly `0 / next_thresh
 
 ## Rod Upgrade Tiers
 
-Every 5 levels the fishing rod visually upgrades. The rod tier governs which rod ASCII art is used in all four animation frames (idle, hooking, retrieving, display). Each fisherman character must have rod-art variants for all 10 tiers.
+Every 5 levels the fishing rod visually upgrades. The rod tier governs which rod ASCII art **and color** is used in all four animation frames (idle, hooking, retrieving, display). Each fisherman character must have rod-art variants for all 10 tiers.
 
-| Levels | Rod Tier | Name | Visual Character |
-|--------|----------|------|-----------------|
-| 1–4 | 1 | Willow Branch | `\` with a short wiggly line |
-| 5–9 | 2 | Bamboo Rod | `\|` — straight, notched |
-| 10–14 | 3 | Fiberglass Rod | `\\` — two-tone |
-| 15–19 | 4 | Spinning Rod | `\=` with small reel indicator |
-| 20–24 | 5 | Baitcaster | `\≡` with reel and guide rings |
-| 25–29 | 6 | Carbon Fiber | `\#` — sleek, dark |
-| 30–34 | 7 | Fly Rod | long `\~~~~` with a tapered tip |
-| 35–39 | 8 | Surf Rod | extra-long `\‾‾‾` with heavy guides |
-| 40–44 | 9 | Gilded Rod | `\$` — ornate with gold trim |
-| 45–50 | 10 | Celestial Rod | `\★` — glowing, star-tipped |
+| Levels | Tier | Name | Visual Character | ANSI Color |
+|--------|------|------|-----------------|------------|
+| 1–4 | 1 | Willow Branch | `\` with a short wiggly line | none (default) |
+| 5–9 | 2 | Bamboo Rod | `\|` — straight, notched | `\e[33m` dim yellow |
+| 10–14 | 3 | Fiberglass Rod | `\\` — two-tone | `\e[37m` light gray |
+| 15–19 | 4 | Spinning Rod | `\=` with small reel indicator | `\e[36m` cyan |
+| 20–24 | 5 | Baitcaster | `\≡` with reel and guide rings | `\e[92m` bright green |
+| 25–29 | 6 | Carbon Fiber | `\#` — sleek, dark | `\e[1;90m` bold dark gray |
+| 30–34 | 7 | Fly Rod | long `\~~~~` with a tapered tip | `\e[94m` bright blue |
+| 35–39 | 8 | Surf Rod | extra-long `\‾‾‾` with heavy guides | `\e[96m` bright cyan |
+| 40–44 | 9 | Gilded Rod | `\$` — ornate with gold trim | `\e[1;33m` bold yellow (gold) |
+| 45–50 | 10 | Celestial Rod | `\★` — glowing, star-tipped | `\e[1;95m` bold bright magenta |
 
-### Rod Art Implementation
+The color jump is the primary signal that a rod tier has changed — it should be immediately obvious even in a glance. The first four tiers are subtle; tiers 6–10 are increasingly vivid.
+
+### Rod Color Implementation
+
+Color wraps every rod character in all four frame states. The reset (`\e[0m`) is appended immediately after the last rod character in each row so body/water characters are unaffected.
+
+```
+// Pseudocode — applied at render time, not stored in frame data
+rodColor = ROD_COLORS[rodTier]   // ANSI escape string, or "" for tier 1
+colorize = (s) => rodColor + s + (rodColor ? "\e[0m" : "")
+```
+
+**Which characters get colorized:**
+- The rod shaft: all `/` and `\` characters that form the rod body
+- The rod tip and special characters: `★`, `$`, `≡`, `=`, `#`, `~~~~`, `‾‾‾`
+- The fishing line (`|` hanging from rod tip) — same color as the rod, so the whole rig reads as one unit
+
+**Tier 10 exception:** At Celestial Rod, the fish display frame's raised-arms row (`\(o)/`) also renders the `\` and `/` arm-characters in bold magenta, as if the rod's energy has transferred to the fisherman's whole pose.
+
+### Rod Art Derivation
 
 Each fisherman's `frames` object gains a `rodTier` override mechanism. The skill replaces the rod-region characters in the pre-authored ASCII frames with tier-appropriate characters at render time.
 
@@ -148,6 +167,9 @@ EXP is fully reconstructed from `catches.json` at runtime (see level-up logic ab
 - [ ] Level is derived from total EXP in `catches.json` — not stored separately.
 - [ ] Level-up notification fires inline when a catch advances the level, naming the new rod tier.
 - [ ] Rod tier changes every 5 levels (1→2 at level 5, 2→3 at level 10, …).
-- [ ] All 10 rod tiers are visually distinct in ASCII art.
+- [ ] All 10 rod tiers are visually distinct in both ASCII art shape and color.
+- [ ] Rod color wraps only rod/line characters — body, water, and fish characters remain default color.
+- [ ] ANSI reset (`\e[0m`) always follows the last colored character in each row.
+- [ ] Tier 10 Celestial Rod colors the arm characters in the display frame.
 - [ ] EXP bar placement does not collide with Claude's text output.
 - [ ] At level 50 cap, further catches still log EXP but the bar reads `MAX` and no level-up fires.
