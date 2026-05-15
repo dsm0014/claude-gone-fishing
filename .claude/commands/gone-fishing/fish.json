@@ -1,0 +1,12 @@
+[
+  {
+    "id": "rainbow-trout",
+    "common": "Rainbow Trout",
+    "scientific": "Oncorhynchus mykiss",
+    "habitat": "freshwater",
+    "rarity": "common",
+    "ascii": "><(((º>",
+    "exp": 30,
+    "flavor": "Named for the pink-to-red lateral stripe that shimmers in sunlight."
+  }
+]
