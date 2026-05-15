@@ -29,6 +29,7 @@ Each entry:
   "common": "Atlantic Bluefin Tuna",
   "scientific": "Thunnus thynnus",
   "habitat": "saltwater",
+  "rarity": "uncommon",
   "ascii": "><(((º>",
   "exp": 90,
   "flavor": "One of the largest bony fish in the sea."
@@ -40,10 +41,24 @@ Each entry:
 | `id` | Yes | Kebab-case unique identifier |
 | `common` | Yes | Common English name |
 | `scientific` | Yes | Binomial scientific name |
-| `habitat` | Yes | `freshwater` \| `saltwater` \| `brackish` \| `deep-sea` |
+| `habitat` | Yes | `freshwater` \| `saltwater` \| `brackish` \| `deep-sea` \| `tropical` \| `arctic` |
+| `rarity` | Yes | `common` \| `uncommon` \| `rare` \| `legendary` — drives weighted catch probability (see [Spec 03](./03-catch-probability.md)) |
 | `ascii` | Yes | Single-line ASCII art of the fish (fits in ~20 chars) |
 | `exp` | Yes | EXP awarded on catch — see [Spec 08](./08-leveling-system.md) for tier ranges |
 | `flavor` | No | One sentence of flavor text shown in stats |
+
+## Rarity Distribution
+
+The full pool of 100+ fish must follow this approximate split:
+
+| Rarity | Target Count | EXP Range |
+|--------|-------------|-----------|
+| `common` | ~60 | 15–40 |
+| `uncommon` | ~25 | 45–80 |
+| `rare` | ~12 | 90–150 |
+| `legendary` | ~3 | 175–250 |
+
+Legendary species should be genuinely extraordinary — coelacanth, oarfish, giant sturgeon, and similar. Rare species are unusual but not mythical. EXP ranges must align with [Spec 08](./08-leveling-system.md).
 
 ## ASCII Art Guidelines
 
@@ -71,6 +86,8 @@ Rare/Unusual: Coelacanth, Paddlefish, Arapaima, Alligator Gar, Giant Trevally, R
 - [ ] At least 100 entries in `fish.json`.
 - [ ] Every entry passes schema validation (all required fields present, `id` is unique).
 - [ ] Every `ascii` field is ≤ 22 characters wide.
-- [ ] Species span at least 4 habitat types.
+- [ ] Species span all 6 habitat types.
 - [ ] All species are real, verifiable fish.
-- [ ] Every entry has an `exp` value within the correct tier range (see Spec 08).
+- [ ] Every entry has a `rarity` value of `common`, `uncommon`, `rare`, or `legendary`.
+- [ ] Rarity distribution approximates 60 / 25 / 12 / 3 across the pool.
+- [ ] Every entry has an `exp` value within the correct tier range for its rarity (see Spec 08).

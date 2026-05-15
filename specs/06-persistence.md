@@ -29,6 +29,7 @@ The `refs/` directory is created on first run if it does not exist.
     {
       "fishId": "rainbow-trout",
       "common": "Rainbow Trout",
+      "rarity": "common",
       "exp": 55,
       "timestamp": "2026-05-14T10:23:00.000Z"
     }
@@ -41,6 +42,7 @@ The `refs/` directory is created on first run if it does not exist.
 | `version` | number | Schema version — increment on breaking changes |
 | `catches[].fishId` | string | Matches `id` field in fish database |
 | `catches[].common` | string | Denormalized common name (survives fish database edits) |
+| `catches[].rarity` | string | Denormalized rarity tier snapshotted at catch time — used for stats breakdowns without rejoining `fish.json` |
 | `catches[].exp` | number | EXP value snapshotted from `fish.json` at catch time — survives rebalancing |
 | `catches[].timestamp` | string | ISO 8601 UTC timestamp of the catch |
 
@@ -90,7 +92,7 @@ Data is intentionally local-only. No syncing, no remote storage, no telemetry.
 - [ ] `refs/` directory is created on first run if it does not exist.
 - [ ] `catches.json` is created on first catch if it does not exist.
 - [ ] `profile.json` is created on first `/gone-fishing` run and persists across re-rolls.
-- [ ] Each catch appends a new record with the correct `fishId`, `common`, `exp`, and UTC timestamp.
+- [ ] Each catch appends a new record with the correct `fishId`, `common`, `rarity`, `exp`, and UTC timestamp.
 - [ ] Reads return an empty result gracefully when the file is missing.
 - [ ] Writes are atomic (tmp → rename pattern).
 - [ ] A corrupted or version-mismatched file does not crash the skill.

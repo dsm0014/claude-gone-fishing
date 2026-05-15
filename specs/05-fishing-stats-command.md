@@ -40,6 +40,10 @@ The `/fishing-stats` slash command displays a summary of the user's lifetime fis
 ║  First Catch:          2026-05-14    ║
 ║  Last Catch:           2026-05-17    ║
 ╠══════════════════════════════════════╣
+║  Catches by Rarity                   ║
+║  Common:    28    Uncommon:  10      ║
+║  Rare:       3    Legendary:  1      ║
+╠══════════════════════════════════════╣
 ║  Top Catches                         ║
 ║  1. Rainbow Trout         ×5         ║
 ║  2. Largemouth Bass       ×4         ║
@@ -59,6 +63,7 @@ The `/fishing-stats` slash command displays a summary of the user's lifetime fis
 | Fisherman | Current character's name and full backstory paragraph (word-wrapped) |
 | Level | Current level, rod tier name, and EXP progress bar (see [Spec 08](./08-leveling-system.md)) |
 | Summary | Total catches, unique species count vs pool size, total lifetime EXP, date range |
+| Catches by Rarity | Count of catches in each rarity tier: Common, Uncommon, Rare, Legendary |
 | Top Catches | Top 3 most-caught species with count |
 | Recent Catches | Last 3 catches with timestamp |
 
@@ -82,6 +87,7 @@ The skill reads `~/.claude/skills/gone-fishing/refs/catches.json`, aggregates th
 - [ ] EXP bar shows `MAX` at level 50.
 - [ ] All stat sections render correctly when data exists.
 - [ ] Summary shows total lifetime EXP earned.
+- [ ] Catches by Rarity section shows correct counts for all four tiers.
 - [ ] Friendly empty-state message shows when no catches are recorded.
 - [ ] Species count denominator reflects the actual fish pool size.
 - [ ] Timestamps display in local time (not UTC).
