@@ -3,7 +3,6 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 CMD_SRC="$REPO_ROOT/.claude/commands/gone-fishing"
-LIB_SRC="$REPO_ROOT/lib"
 CMD_DST="$HOME/.claude/commands"
 DATA_DST="$HOME/.claude/commands/refs/gone-fishing"
 STATUSLINE_SCRIPT="$HOME/.claude/statusline-command.sh"
@@ -15,7 +14,6 @@ echo "  data     -> $DATA_DST"
 
 mkdir -p "$CMD_DST"
 mkdir -p "$DATA_DST/refs"
-mkdir -p "$DATA_DST/lib"
 
 for f in gone-fishing.md fishing-stats.md new-fisherman.md; do
   cp "$CMD_SRC/$f" "$CMD_DST/$f"
@@ -25,12 +23,6 @@ done
 for f in fish.json fishermen.json; do
   cp "$CMD_SRC/$f" "$DATA_DST/$f"
   echo "  copied $f -> commands/refs/gone-fishing/"
-done
-
-for f in anim_core.sh anim_frames.sh anim_renderer.sh anim_loop.sh; do
-  cp "$LIB_SRC/$f" "$DATA_DST/lib/$f"
-  chmod +x "$DATA_DST/lib/$f"
-  echo "  copied $f -> commands/refs/gone-fishing/lib/"
 done
 
 # ── Statusline ───────────────────────────────────────────────────────────────
