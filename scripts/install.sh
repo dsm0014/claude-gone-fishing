@@ -133,14 +133,15 @@ for _ in 1 2 3 4 5; do
     fi
   fi
 done
-[ "${COLS:-0}" -lt 40 ] && COLS=${COLUMNS:-125}
+[ "${COLS:-0}" -lt 40 ] && COLS=$(tput cols 2>/dev/null)
+[ "${COLS:-0}" -lt 40 ] && COLS=${COLUMNS:-80}
 
 ART_W=0
 for _line in "${ART_LINES[@]}"; do
   [ "${#_line}" -gt "$ART_W" ] && ART_W="${#_line}"
 done
 
-MARGIN=2
+MARGIN=8
 PAD=$(( COLS - ART_W - MARGIN ))
 [ "$PAD" -lt 0 ] && PAD=0
 
@@ -148,6 +149,15 @@ B=$'\xe2\xa0\x80'  # Braille Blank U+2800 — survives Claude Code's whitespace 
 SPACER=$(printf "${B}%${PAD}s" "")
 NC=$'\033[0m'
 C=$'\033[38;5;15m'
+
+# Extend water rows (ending with ~) to fill into the right margin
+_wlen=$(( MARGIN - 3 ))
+if [ "$_wlen" -gt 0 ]; then
+  _wfill=$(printf '~%.0s' $(seq 1 "$_wlen"))
+  for i in "${!ART_LINES[@]}"; do
+    case "${ART_LINES[$i]}" in *'~') ART_LINES[$i]="${ART_LINES[$i]}${_wfill}" ;; esac
+  done
+fi
 
 for _line in "${ART_LINES[@]}"; do
   printf '%s%s%s\n' "$SPACER" "${C}${_line}${NC}"
