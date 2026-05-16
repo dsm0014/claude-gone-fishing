@@ -1,6 +1,6 @@
 # Spec 02 — Animation System
 
-**Status:** `TODO`
+**Status:** `IN PROGRESS`
 **Depends on:** [04 Fish Database](./04-fish-database.md)
 
 ---
@@ -11,106 +11,93 @@ Defines the ASCII art frames and sequencing logic for the fisherman overlay. All
 
 ## Frame States
 
-All frames share the same bounding box: **8 rows tall, ~22 columns wide**. Characters must stay in the same position across all four states so transitions look like pose changes, not redraws.
+Each frame set is defined per-character in `fishermen.json` under `.frames`. Frames are **5 rows tall** and **~8 characters wide** (art only; water fill extends them further right at render time — see Rendering Rules). Characters must stay in the same position across all four states so transitions look like pose changes, not redraws.
 
 ### 1. Idle
-The fisherman stands at the water's edge, rod extended, line dropped into the water. This is the default state between turns.
+The fisherman stands at the water's edge, rod extended, line in the water. Default state between turns.
 
-```
-          |
-   _     /|
-  (o)   / |
-   \>--'  |
-   /\   ~~|~~
-  /  \~~~~|~~
-      ~~~~*~~
-```
-
-- Row 1: bare fishing line hanging from rod tip
-- Rows 2–3: head and rod arm (rod angled up-right with `/`)
-- Row 4: torso leaning into cast (`\>--'` connects body to rod)
-- Rows 5–6: legs with water surface rising behind them
-- Row 7: deeper water
-- Row 8: lure/bobber (`*`) resting at depth
-
-Rendered statically — no looping animation in idle to avoid terminal noise.
+- Row 1: rod tip / fishing line above water
+- Row 2: fishing line dropping down
+- Row 3: body at water surface — **must end with `~`** so water fill applies
+- Rows 4–5: legs and feet in water — end with `~~`
 
 ### 2. Hooking
-Triggered immediately when a catch is rolled. Line snaps taut and horizontal. Display for ~1 second (or 1 render cycle).
+Triggered immediately when a catch is rolled. Held for < 2 seconds (driven by `animStartAt` elapsed time).
 
-```
-  !!      |
-   _     /|
-  (!)   / |
-   \>--'  |
-   /\   ~~|~~
-  /  \~~~~|~~
-      ~~~XvX~
-```
-
-- `!!` above head signals the strike
-- Head changes to `(!)` (eyes wide, startled)
-- Rod bends: `/` goes steeper (fish pulling down and away)
-- Line goes horizontal: `----*` shows the taut line with fish at end
-- Water unchanged — fish is below surface, just hooked
+- `!!` or equivalent strike indicator above/beside head
+- Line angles toward the fish
+- Bottom water row unchanged
 
 ### 3. Retrieving
-Animated: 2–3 frames showing the reel-in motion. Each frame held for ~0.5 seconds. Fish (`><`) rises toward the surface between frames.
+Reel-in pose. Held from 2 s to 4 s elapsed.
 
-```
-Frame A (fish deep, line still taut):   Frame B (fish at surface, reel almost done):
-
-   _     /\                                 _     /\
-  (o)   / |                                (o)   / |
-   \>--'  |                                 \>--'  |
-   /*\  ~~|~~                               /*\  ~>^<~
-  /   \~~~|~~                              /   \~~~~~~
-       ~~>^<~                                   ~~~~~~
-```
-
-- Frame A: `>^<` fish symbol appears at bottom of taut line
-- Frame B: `=` on rod shows reel tension; fish moves up the three water layers
-- The fisherman's expression returns to `(o)` — focused, not panicked
-- Body posture stays consistent; only line angle and fish position change
+- Rod and arm position changes to show reeling
+- Fish symbol (`~<` or `>^<`) appears at the surface row
+- Bottom water row unchanged
 
 ### 4. Display (Catch Reveal)
-Fisherman raises both arms to hold the catch overhead. Fish ASCII art rendered above raised hands and name rendered to the right. Held for ~5 seconds before returning to idle.
+Held from 4 s elapsed until state is reset to idle on the next turn.
 
-```
- ><(((o>
-  \(o)/  Bluefin Tuna
-   \*/   
-   /*\   ~~~~~~
-  /   \~~~~~~~~
-       ~~~~~~~~
-```
+- Arms raised or celebratory pose
+- Fish ASCII art appended to row 1 at render time (injected from `state.json`)
+- Fish common name + EXP appended to row 2 at render time
+- No water rows required (fish is out of the water)
 
-- Arms raised: `\(o)/` instead of the normal rod-holding pose
-- Fish art (`><(((o>`) appears directly to the right of the raised hands
-- Fish name on the line below, aligned with the art
-- `\*/ ` for the forward facing torso — same waist as the idle/hooking poses
-- Water columns (`~~`, `~~~~`) stay on the right at the same position as all other frames — the fisherman is still standing at the bank, not out at sea
-
-The fish ASCII art is loaded from the fish database entry (see [Spec 04](./04-fish-database.md)). Each fish has its own art embedded in the database.
+Fish art and name are loaded from `state.json` by `statusline-command.sh` — they are not stored in the frame definition.
 
 ## Sequencing
 
 ```
-Idle → (10% roll hits) → Hooking (1s) → Retrieving (1–1.5s) → Display (3s) → Idle
+Idle → (10% roll hits) → Hooking (elapsed < 2s) → Retrieving (2s ≤ elapsed < 4s) → Display (elapsed ≥ 4s) → Idle
 ```
+
+`elapsed = now - animStartAt`. The statusline script reads `state.json` on every poll cycle and selects the frame key accordingly. No background process is needed.
 
 ## Rendering Rules
 
-- All frames are drawn at a fixed terminal column offset (rightmost ~30 cols).
-- Use ANSI `\x1b[{row};{col}H` cursor positioning for each line of a frame.
-- After drawing, reset cursor to its original position so Claude's output is unaffected.
-- Save/restore cursor position with `\x1b[s` / `\x1b[u` around each render call.
-- Clear the previous frame before drawing the next using targeted line clears (`\x1b[2K` at each row used by the fisherman).
+Frames are rendered by `~/.claude/statusline-command.sh`, which outputs multi-line text consumed by Claude Code's `statusLine.type = "command"` integration.
+
+### Terminal width detection
+
+The script detects the usable column count via a process-tree PTY walk (reads `stty size` from the nearest ancestor with a controlling terminal). Fallbacks in order:
+
+1. `tput cols`
+2. `$COLUMNS`
+3. Hardcoded `80`
+
+### Right-alignment
+
+A spacer of `MARGIN = 8` columns is reserved on the right. The art is positioned so that:
+
+```
+SPACER width = COLS − ART_W − MARGIN
+Total line   = SPACER + ART_W  (≤ COLS − MARGIN)
+```
+
+The spacer starts with U+2800 BRAILLE PATTERN BLANK to prevent Claude Code from stripping leading whitespace, followed by regular spaces.
+
+### Dynamic water fill
+
+After computing the spacer (so art positioning is unaffected), any frame row whose last character is `~` is extended by `MARGIN − 3` additional `~` characters. This fills the right margin with water up to the clip boundary without triggering the renderer's ellipsis truncation.
+
+- Rows not ending in `~` (rod, line, body above surface, display frame) are left as-is.
+- Water fill amount = `MARGIN − 3` = 5 chars at the current margin setting.
+
+### Frame key selection
+
+| `state.json` state | elapsed        | frame key    |
+|--------------------|----------------|--------------|
+| `"idle"`           | —              | `idle`       |
+| `"caught"`         | < 2 s          | `hooking`    |
+| `"caught"`         | 2 s – 3.99 s   | `retrieving` |
+| `"caught"`         | ≥ 4 s          | `display`    |
 
 ## Acceptance Criteria
 
-- [ ] All four frame states render correctly at the far right.
-- [ ] Frame transitions play in the correct order.
-- [ ] No cursor artifacts remain after each render cycle.
-- [ ] Display frame correctly injects the fish name and ASCII art from the database.
-- [ ] Rendering is a no-op when terminal width < 120 columns.
+- [x] All four frame states render via the statusline command.
+- [x] Frame key is selected by elapsed time from `animStartAt`.
+- [x] Display frame injects fish art and name from `state.json`.
+- [x] Art is right-aligned using detected terminal width with `MARGIN = 8`.
+- [x] Water rows extend dynamically to fill the right margin.
+- [ ] Frame art is complete and visually consistent for all 40 characters.
+- [ ] Rendering is a no-op when terminal width < 80 columns.
