@@ -86,11 +86,44 @@ The full idle and caught JSON examples in `gone-fishing.md` duplicate what Spec 
 
 ---
 
-### 5. settings.json — Expand permission allowlist
+### 5. settings.json — Expand Read allowlist
 
-The current allowlist is minimal and generates prompts for common read operations on the data and refs directories. Transcript review is needed to identify the most frequent recurring prompts.
+The current allowlist generates prompts for read operations on the data directory. The `Bash` mv allowlist is partially addressed by item 6 (eliminating no-catch writes), but the Read side still needs broadening.
 
-**Action:** After reviewing recent permission prompts, add broad `Read` allows for the data directory and expand the `Bash` allow to cover common atomic write patterns without listing each file individually.
+**Action:** Add a broad `Read` allow for `~/.claude/commands/refs/gone-fishing/**` so skill file reads never prompt. The mv permission is only needed on actual catches (~10% of turns) — keep the existing entry but no longer treat it as the primary friction point.
+
+---
+
+### 6. Per-turn state writes — eliminate idle resets, push expiry into statusline
+
+**The problem:** `gone-fishing.md` currently requires Claude to write `state.json` on every conversation turn — both on catch (correct) and on no-catch (wasteful). No-catch turns are ~90% of all turns. Each one triggers a silent `mv` permission call with zero user-visible effect. Writing `active: true` every turn is also the only reason the active-session glyph (`~~*~~`) works — without it, the flag goes stale.
+
+**Root cause:** State expiry (caught → idle after the animation plays) is driven by Claude writes rather than by the statusline itself, even though the statusline already computes `elapsed = now - animStartAt` and has all the information it needs.
+
+**Proposed changes:**
+
+**a. Statusline handles caught-state expiry**
+
+The statusline already branches on elapsed time for animation frames. Extend it: if `state == "caught"` and `elapsed >= 10` (seconds), render the idle frame without waiting for Claude to write anything. This makes the statusline self-contained for all state transitions except the initial catch event.
+
+**b. Claude: no write on no-catch**
+
+Remove the "No catch: write idle state" step from the per-turn section of `gone-fishing.md`. Claude writes `state.json` only when there is an actual catch. The statusline's elapsed-based expiry handles the visual reset.
+
+**c. Replace per-turn `active` flag with one-time session write**
+
+The `active: true` field exists solely to show `~~*~~` vs `~~~~~` in the statusline. Rather than re-asserting it every turn, write a separate `session.json` exactly once at `/gone-fishing` invocation:
+
+```json
+{ "version": 1, "fishermanId": "<id>", "fishermanName": "<Name>", "activatedAt": "<ISO 8601 UTC>" }
+```
+
+The statusline shows `~~*~~` if `session.json` exists and `activatedAt` is within the last 8 hours; `~~~~~` otherwise. Drop the `active` field from `state.json` entirely.
+
+**Impact:**
+- No-catch turns (90%): zero file I/O, no permission prompts
+- Catch turns (10%): one atomic write to `state.json` + one append to `catches.json` — same as today
+- `/gone-fishing` activation: one additional write to `session.json` — negligible
 
 ---
 
@@ -102,3 +135,7 @@ The current allowlist is minimal and generates prompts for common read operation
 - [ ] `gone-fishing.md` state file section uses a field table, not full JSON examples.
 - [ ] `settings.json` allows Read on the full gone-fishing data directory without prompting.
 - [ ] Total size of always-loaded context (CLAUDE.md + @-imports) is reduced by at least 30%.
+- [ ] `gone-fishing.md` per-turn section has no idle write step; no-catch turns produce zero file I/O.
+- [ ] `state.json` schema drops the `active` field; `session.json` is written once at activation.
+- [ ] Statusline renders idle frame when `state == "caught"` and `elapsed >= 10s` without a file read/write.
+- [ ] `/gone-fishing` writes `session.json`; statusline uses `activatedAt` timestamp for active-glyph logic.
