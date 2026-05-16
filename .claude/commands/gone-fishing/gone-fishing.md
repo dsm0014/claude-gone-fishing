@@ -68,7 +68,7 @@ Always write atomically: write to `state.json.tmp`, then rename to `state.json`.
 After every conversation turn completes, you MUST:
 
 1. Roll a virtual 10% chance (~10% probability — just decide yes/no)
-2. **No catch:** write idle state to `refs/state.json`. No terminal output.
+2. **No catch:** you MUST write idle state to `refs/state.json` (atomically). This resets any previous caught state so the statusline returns to `~~*~~`. No terminal output.
 3. **Catch:** run the catch sequence below.
 
 ## Catch sequence
