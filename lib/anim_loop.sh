@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 # anim_loop.sh — Background animation state machine for the gone-fishing overlay.
 #
-# Usage: bash anim_loop.sh <mailbox_file> <fisherman_id> [term_cols]
+# Usage: bash anim_loop.sh <mailbox_file> <fisherman_id> [term_cols] [term_rows]
 #
 # Args:
 #   mailbox_file  — temp file path used as one-way mailbox from the main process
 #   fisherman_id  — id from fishermen.json (e.g. "grizzled-pete")
 #   term_cols     — terminal column count (pass when stdin is not a TTY)
+#   term_rows     — terminal row count; used to set the scroll region so Pete
+#                   stays pinned to the top while conversation scrolls below
 #
 # Mailbox protocol (main → loop):
 #   Write `hooking:<color>:<fish_name>` on line 1.
@@ -25,6 +27,7 @@ source "$SCRIPT_DIR/anim_renderer.sh"
 MAILBOX_FILE="${1:?mailbox_file required}"
 FISHERMAN_ID="${2:-grizzled-pete}"
 TERM_COLS="${3:-}"
+TERM_ROWS="${4:-24}"
 FISHERMEN_JSON="$HOME/.claude/commands/refs/gone-fishing/fishermen.json"
 
 # ── Millisecond timer ─────────────────────────────────────────────────────────
@@ -48,6 +51,10 @@ fi
 if ! load_fisherman_frames "$FISHERMAN_ID" "$FISHERMEN_JSON"; then
   exit 1
 fi
+
+# ── Scroll region — pin Pete to the top ──────────────────────────────────────
+anim_setup_scroll_region "$TERM_ROWS"
+trap 'anim_teardown_scroll_region' EXIT INT TERM
 
 # ── State machine ─────────────────────────────────────────────────────────────
 ANIM_STATE="idle"

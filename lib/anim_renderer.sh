@@ -10,7 +10,7 @@
 anim_render_frame() {
   local arr_name="$1"
   local fish_color="${2:-15}"
-  local row=1 line arr_len i=0
+  local row="${ANIM_START_ROW:-1}" line arr_len i=0
 
   anim_save_cursor
   anim_clear_region
@@ -39,7 +39,7 @@ anim_render_display() {
   local fish_name="$1"
   local fish_ascii="$2"
   local fish_color="${3:-15}"
-  local row=1 line arr_len i=0
+  local row="${ANIM_START_ROW:-1}" line arr_len i=0
 
   anim_save_cursor
   anim_clear_region
