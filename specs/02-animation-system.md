@@ -1,6 +1,6 @@
 # Spec 02 — Animation System
 
-**Status:** `IN PROGRESS`
+**Status:** `IN PROGRESS` — rendering complete; frame art pending for all 40 characters (see Spec 07)
 **Depends on:** [04 Fish Database](./04-fish-database.md)
 
 ---
@@ -78,10 +78,11 @@ The spacer starts with U+2800 BRAILLE PATTERN BLANK to prevent Claude Code from 
 
 ### Dynamic water fill
 
-After computing the spacer (so art positioning is unaffected), any frame row whose last character is `~` is extended by `MARGIN − 3` additional `~` characters. This fills the right margin with water up to the clip boundary without triggering the renderer's ellipsis truncation.
+Water fill is applied **before** `ART_W` is measured, so `PAD` correctly accounts for the extended rows. Any frame row whose last character is `~` is extended by `MARGIN − 3` additional `~` characters. This fills the right margin with water up to the clip boundary without triggering the renderer's ellipsis truncation.
 
 - Rows not ending in `~` (rod, line, body above surface, display frame) are left as-is.
 - Water fill amount = `MARGIN − 3` = 5 chars at the current margin setting.
+- Order: apply fill → measure `ART_W` → compute `PAD` → output.
 
 ### Frame key selection
 
@@ -99,5 +100,5 @@ After computing the spacer (so art positioning is unaffected), any frame row who
 - [x] Display frame injects fish art and name from `state.json`.
 - [x] Art is right-aligned using detected terminal width with `MARGIN = 8`.
 - [x] Water rows extend dynamically to fill the right margin.
+- [x] Rendering is a no-op when terminal width < 80 columns.
 - [ ] Frame art is complete and visually consistent for all 40 characters.
-- [ ] Rendering is a no-op when terminal width < 80 columns.
