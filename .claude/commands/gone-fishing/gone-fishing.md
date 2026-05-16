@@ -41,9 +41,11 @@ You are the gone-fishing skill. When invoked, activate the fisherman overlay for
 
 The fisherman's current state is persisted here so the status bar can read it at any time.
 
+The `"active"` field marks that `/gone-fishing` has been invoked in the current session. The statusline uses it to distinguish active fishing (`~~*~~`) from a stale profile with no active session (`~~~~~`).
+
 Idle state:
 ```json
-{ "version": 1, "fishermanId": "<id>", "fishermanName": "<Name>", "state": "idle", "animStartAt": 0, "catch": null }
+{ "version": 1, "fishermanId": "<id>", "fishermanName": "<Name>", "state": "idle", "active": true, "animStartAt": 0, "catch": null }
 ```
 
 Caught state (write `animStartAt` as current Unix seconds so the statusline can animate hooking→retrieving→display by elapsed time):
@@ -53,6 +55,7 @@ Caught state (write `animStartAt` as current Unix seconds so the statusline can 
   "fishermanId": "<id>",
   "fishermanName": "<Name>",
   "state": "caught",
+  "active": true,
   "animStartAt": <unix_seconds>,
   "catch": { "fishId": "<id>", "common": "<common>", "ascii": "<ascii>", "color": <color>, "exp": <exp> }
 }

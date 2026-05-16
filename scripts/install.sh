@@ -91,6 +91,19 @@ if [ "$fish_state" = "caught" ]; then
   fi
 fi
 
+fisherman_name=$(jq -r '.fishermanName // ""' "$STATE_FILE" 2>/dev/null)
+active=$(jq -r '.active // false' "$STATE_FILE" 2>/dev/null)
+if [ -n "$fisherman_name" ]; then
+  if [ "$fish_state" = "caught" ]; then
+    glyph="~>!<~"
+  elif [ "$active" = "true" ]; then
+    glyph="~~*~~"
+  else
+    glyph="~~~~~"
+  fi
+  parts="$parts | 🎣 ${fisherman_name}  ${glyph}"
+fi
+
 mapfile -t ART_LINES < <(jq -r \
   --arg id "$fisherman_id" --arg key "$frame_key" \
   '.[] | select(.id == $id) | .frames[$key][]' \
@@ -159,11 +172,11 @@ if [ "$_wlen" -gt 0 ]; then
   done
 fi
 
+printf '%s\n' "$parts"
+
 for _line in "${ART_LINES[@]}"; do
   printf '%s%s%s\n' "$SPACER" "${C}${_line}${NC}"
 done
-
-printf '%s' "$parts"
 EOF
 chmod +x "$STATUSLINE_SCRIPT"
 echo "  statusline-command.sh written"
