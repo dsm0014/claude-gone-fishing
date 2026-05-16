@@ -101,4 +101,4 @@ Water fill is applied **before** `ART_W` is measured, so `PAD` correctly account
 - [x] Art is right-aligned using detected terminal width with `MARGIN = 8`.
 - [x] Water rows extend dynamically to fill the right margin.
 - [x] Rendering is a no-op when terminal width < 80 columns.
-- [x] Frame art is complete and visually consistent for all current characters. (Expanding the roster to 40 is tracked in Spec 07.)
+- [x] Frame art is complete and visually consistent for all current characters.
