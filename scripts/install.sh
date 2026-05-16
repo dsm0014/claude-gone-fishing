@@ -148,6 +148,7 @@ for _ in 1 2 3 4 5; do
 done
 [ "${COLS:-0}" -lt 40 ] && COLS=$(tput cols 2>/dev/null)
 [ "${COLS:-0}" -lt 40 ] && COLS=${COLUMNS:-80}
+[ "${COLS:-0}" -lt 80 ] && { printf '%s' "$parts"; exit 0; }
 
 MARGIN=8
 
