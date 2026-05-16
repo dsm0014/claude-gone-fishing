@@ -92,15 +92,11 @@ At minimum, characters must differ in **head shape** and **body profile**.
 | Value | Description |
 |-------|-------------|
 | `human` | Real-world human fishers, grounded in specific geography and technique |
-| `fantasy` | Fantasy race characters — elves, dwarves, tree-ents, undead, etc. |
-| `cat` | Anthropomorphic cat characters |
-| `turtle` | Anthropomorphic turtle characters |
-| `aquatic` | Aquatic and deep-sea creatures |
-| `creature` | Other anthropomorphic or non-human creatures not covered above |
+| `fantasy` | Any non-human character — fantasy races, anthropomorphic animals, aquatic creatures, etc. |
 
 **Mechanical uses:**
 
-1. **`/fishing-stats` grouping.** Characters are listed under a section header derived from their type (e.g., `Human Fishermen`, `Fantasy Races`, `Cat People`). This is the primary use.
+1. **`/fishing-stats` grouping.** Characters are listed under a section header derived from their type (e.g., `Human Fishermen`, `Fantasy`). This is the primary use.
 2. **`/new-fisherman` reroll pool.** Currently all types are pooled together. The `type` field enables future filtering if the user wants to reroll within a category — do not remove or change `type` values on existing characters without considering this.
 3. **Intro card subtitle.** The intro card displays the type as a short label below the character name (e.g., `Human · Grizzled Pete`). Type values with underscores or multiple words should be title-cased at render time.
 
@@ -152,7 +148,7 @@ New characters are added in batches, each with its own spec. Each group spec sho
 ## Acceptance Criteria
 
 - [ ] `fishermen.json` contains exactly 40 entries, each with all required fields populated.
-- [ ] Every entry has a `type` value from the valid set.
+- [ ] Every entry has a `type` value of either `human` or `fantasy`.
 - [ ] All frame arrays conform to the canonical row counts (5/5/4/3).
 - [ ] All frame rows are exactly 8 characters wide.
 - [ ] No two `idle` frames across all 40 entries are identical.
