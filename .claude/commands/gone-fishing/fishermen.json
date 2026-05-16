@@ -5,7 +5,7 @@
     "type": "human",
     "backstory": "Pete spent forty years on Lake Superior before his boat sank in a storm he swears he predicted. He fishes now not for sport or food, because standing still makes his knees ache and the water doesn't ask questions. His tackle box holds more memories than lures, and his thermos has never once contained coffee.",
     "frames": {
-      "idle":        ["   |  ", "   |  ", "\\o/ ~ ", " |  ~~", "/ \\ ~~"],
+      "idle":        ["   |  ", "   |  ", "\\o/ ~~", " |  ~~", "/ \\ ~~"],
       "hooking":     ["  !! ", "   |/ ", "\\o/ | ", " |  *<", "/ \\ ~~"],
       "retrieving":  ["   \\ ", "\\o/ |/", " |  ~<", "/ \\ ~~"],
       "display":     ["\\o/   ", " |    ", "/ \\   "]
@@ -17,10 +17,10 @@
     "type": "human",
     "backstory": "Raised on the Atchafalaya, Jean-Pierre spent his first thirty years running a crawfish trap line before his back gave out and he switched to rod fishing in the cypress bayous. He fishes from a battered aluminum pirogue and refuses to use anything but live shrimp for bait. His wide straw hat has survived a dozen gulf storms, and his thermos always holds café au lait, never coffee.",
     "frames": {
-      "idle":        ["   |    ", "  _|_   ", " (o)  ~ ", "  |   ~~", " ====~~~"],
+      "idle":        ["   |    ", "  _|_   ", " (o)  ~~", "  |   ~~", " ====~~~"],
       "hooking":     ["  !!    ", "  _|/   ", " (o)  | ", "  |  *< ", " ====~~~"],
       "retrieving":  ["  \\    ", " (o) |/ ", "  |   ~<", " ====~~~"],
-      "display":     [" (o)    ", "  |     ", " ====   "]
+      "display":     ["\\(o)/   ", "  |     ", " ====   "]
     }
   },
   {
@@ -29,7 +29,7 @@
     "type": "human",
     "backstory": "Marisol grew up watching her father pole skiffs across the flats of the Lower Keys before she was old enough to hold a rod. She guides full-time now, specializing in permit and bonefish, and has a reputation for spotting tailing fish before anyone else on the boat. She keeps a push-pole in her left hand and a fly rod in her right and considers a skiff engine a last resort.",
     "frames": {
-      "idle":        [" \\  |  ", "  \\o|  ", "   ||~  ", "   ||~~~", "  ====~~"],
+      "idle":        [" \\  |  ", "  \\o|  ", "   ||~~~", "   ||~~~", "  ====~~"],
       "hooking":     [" \\ !!  ", "  \\o|/ ", "   ||   ", "   || *<", "  ====~~"],
       "retrieving":  [" \\ \\  ", "  \\o|/ ", "   || ~<", "  ====~~"],
       "display":     ["  \\o/  ", "   ||   ", "  ====  "]
@@ -41,10 +41,10 @@
     "type": "human",
     "backstory": "Karl worked deckhand on a Bristol Bay salmon seiner for twelve years before buying his own 32-foot boat and running it solo. He fishes Chinook in the summer and Dungeness in the fall, and once stayed awake for forty-one consecutive hours during a good king salmon run without missing a set. His hands are permanently shaped around a rod or a coffee mug, and he sees no meaningful difference between the two.",
     "frames": {
-      "idle":        ["   |    ", "  _|_   ", " {O}  ~ ", "  ||  ~~", "  ||  ~~"],
+      "idle":        ["   |    ", "  _|_   ", " {O}  ~~", "  ||  ~~", "  ||  ~~"],
       "hooking":     ["  !!    ", "  _|/   ", " {O}  | ", "  || *< ", "  ||  ~~"],
       "retrieving":  ["   \\   ", " {O} |/ ", "  ||  ~<", "  ||  ~~"],
-      "display":     [" {O}    ", "  ||    ", "  ||    "]
+      "display":     ["\\{O}/   ", "  ||    ", "  ||    "]
     }
   },
   {
@@ -53,7 +53,7 @@
     "type": "human",
     "backstory": "Ray has fished the same stretch of beach north of Santa Cruz for thirty years, casting for striped bass and halibut at dawn while the surfers are still waxing their boards. His rod is twelve feet long and he once cast so far that a pelican intercepted the bait before it hit the water. He fishes in board shorts year-round and has never owned waders.",
     "frames": {
-      "idle":        ["       /", "      / ", " \\o/ ~ ", "  |   ~~", "  |   ~~"],
+      "idle":        ["       /", "      / ", " \\o/ ~~", "  |   ~~", "  |   ~~"],
       "hooking":     ["     !! ", "      /!", " \\o/ |  ", "  |  *< ", "  |   ~~"],
       "retrieving":  ["      \\ ", " \\o/ |/ ", "  |   ~<", "  |   ~~"],
       "display":     [" \\o/   ", "  |     ", "  |     "]
@@ -65,10 +65,10 @@
     "type": "human",
     "backstory": "Delphine has been catfishing the Mississippi River since she was six years old and her daddy first put a cane pole in her hands. She prefers noodling but keeps a rod for when the water is cold and the catfish are deep. Her personal best flathead weighed seventy-three pounds, and she landed it alone in a johnboat in the dark without a net.",
     "frames": {
-      "idle":        [" |      ", " |      ", "(o)   ~ ", " |    ~~", "[=====]~"],
+      "idle":        [" |      ", " |      ", "(o)   ~~", " |    ~~", "[=====]~"],
       "hooking":     ["!!      ", " |/     ", "(o)   | ", " |   *< ", "[=====]~"],
       "retrieving":  [" \\     ", "(o)  |/ ", " |    ~<", "[=====]~"],
-      "display":     ["(o)     ", " |      ", "[=====] "]
+      "display":     ["\\(o)/   ", " |      ", "[=====] "]
     }
   },
   {
@@ -77,10 +77,10 @@
     "type": "human",
     "backstory": "Bazza fishes the tidal flats and mangrove creeks north of Cairns for barramundi, which he describes as the best eating fish on the planet and says so to anyone who'll listen. He wears a cork hat regardless of weather, keeps one eye on his lure and one eye out for saltwater crocodiles, and has named every significant snag in a fifty-kilometer stretch of river. His ute has more rod holders than seats.",
     "frames": {
-      "idle":        ["*|*|*|* ", "   |    ", " \\Ô/ ~ ", "  |   ~~", " / \\ ~~"],
+      "idle":        ["*|*|*|* ", "   |    ", " \\Ô/ ~~", "  |   ~~", " / \\ ~~"],
       "hooking":     ["*|*|*|* ", "   |/   ", " \\Ô/ | ", "  |  *< ", " / \\ ~~"],
       "retrieving":  ["*|*|*|* ", " \\Ô/|/ ", "  |   ~<", " / \\ ~~"],
-      "display":     ["*|*|*|* ", " \\Ô/   ", " / \\   "]
+      "display":     [" \\Ô/   ", "  |     ", " / \\   "]
     }
   },
   {
@@ -89,10 +89,10 @@
     "type": "human",
     "backstory": "Pieter has fished the Prinsengracht canal since his grandfather taught him at age four, using a simple pole over the railing of a houseboat. He targets bream and perch in the city canals, wears a waxed cotton jacket regardless of season, and considers the rumble of passing canal boats an acceptable form of white noise. He keeps stroopwafels in his tackle box where other anglers keep lures, and offers one to any passerby who stops to watch.",
     "frames": {
-      "idle":        ["   |    ", "   |    ", "  |o| ~ ", " ==|==~~", "   |  ~~"],
+      "idle":        ["   |    ", "   |    ", "  |o| ~~", " ==|==~~", "   |  ~~"],
       "hooking":     ["  !!    ", "   |/   ", "  |o| | ", " ==|==  ", "   | *< "],
       "retrieving":  ["   \\   ", "  |o||/ ", " ==|==~<", "   |  ~~"],
-      "display":     ["  |o|   ", " ==|==  ", "   |    "]
+      "display":     ["\\|o|/   ", " ==|==  ", "   |    "]
     }
   }
 ]
