@@ -11,9 +11,9 @@ Defines the ASCII art frames and sequencing logic for the fisherman overlay. All
 
 ## Frame States
 
-Each frame set is defined per-character in `fishermen.json` under `.frames`. Frames are **5 rows tall** and **~8 characters wide** (art only; water fill extends them further right at render time — see Rendering Rules). Characters must stay in the same position across all four states so transitions look like pose changes, not redraws.
+Each frame set is defined per-character in `fishermen.json` under `.frames`. All frames are **~8 characters wide** (art only; water fill extends them further right at render time — see Rendering Rules). Characters must stay in the same position across all four states so transitions look like pose changes, not redraws.
 
-### 1. Idle
+### 1. Idle (5 rows)
 The fisherman stands at the water's edge, rod extended, line in the water. Default state between turns.
 
 - Row 1: rod tip / fishing line above water
@@ -21,27 +21,27 @@ The fisherman stands at the water's edge, rod extended, line in the water. Defau
 - Row 3: body at water surface — **must end with `~`** so water fill applies
 - Rows 4–5: legs and feet in water — end with `~~`
 
-### 2. Hooking
+### 2. Hooking (5 rows)
 Triggered immediately when a catch is rolled. Held for < 2 seconds (driven by `animStartAt` elapsed time).
 
 - `!!` or equivalent strike indicator above/beside head
 - Line angles toward the fish
-- Bottom water row unchanged
+- Row 5 (bottom water row) unchanged from idle — ends with `~~`
 
-### 3. Retrieving
-Reel-in pose. Held from 2 s to 4 s elapsed.
+### 3. Retrieving (4 rows)
+Reel-in pose. Held from 2 s to 4 s elapsed. One row shorter — the two leg rows collapse into one.
 
-- Rod and arm position changes to show reeling
-- Fish symbol (`~<` or `>^<`) appears at the surface row
-- Bottom water row unchanged
+- Row 1: rod tip unchanged
+- Row 2: body/head with rod arm raised to reel
+- Row 3: fish symbol (`~<` or `>^<`) at the surface — ends with `~`
+- Row 4: bottom water row — ends with `~~`
 
-### 4. Display (Catch Reveal)
-Held from 4 s elapsed until state is reset to idle on the next turn.
+### 4. Display (3 rows)
+Held from 4 s elapsed until state is reset to idle on the next turn. No water rows.
 
-- Arms raised or celebratory pose
-- Fish ASCII art appended to row 1 at render time (injected from `state.json`)
-- Fish common name + EXP appended to row 2 at render time
-- No water rows required (fish is out of the water)
+- Row 1: head/upper body — fish ASCII art appended at render time (injected from `state.json`)
+- Row 2: mid body — fish common name + EXP appended at render time
+- Row 3: legs/feet
 
 Fish art and name are loaded from `state.json` by `statusline-command.sh` — they are not stored in the frame definition.
 
@@ -70,7 +70,7 @@ The script detects the usable column count via a process-tree PTY walk (reads `s
 A spacer of `MARGIN = 8` columns is reserved on the right. The art is positioned so that:
 
 ```
-SPACER width = COLS − ART_W − MARGIN
+SPACER width = COLS − ART_W − MARGIN   (ART_W measured after water fill)
 Total line   = SPACER + ART_W  (≤ COLS − MARGIN)
 ```
 
