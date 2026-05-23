@@ -72,13 +72,25 @@ if [ -f "$SESSION_FILE" ]; then
     if [ "$age" -lt 28800 ]; then
       fish_state=$([ -f "$STATE_FILE" ] && jq -r '.state // "idle"' "$STATE_FILE" 2>/dev/null || echo "idle")
       if [ "$fish_state" = "caught" ]; then
-        fish_name=$(jq -r '.catch.common // ""' "$STATE_FILE" 2>/dev/null)
-        fish_ascii=$(jq -r '.catch.ascii // ""' "$STATE_FILE" 2>/dev/null)
-        fish_color=$(jq -r '.catch.color // ""' "$STATE_FILE" 2>/dev/null)
-        if [ -n "$fish_color" ]; then
-          fish_ascii="$(printf '\033[38;5;%sm%s\033[0m' "$fish_color" "$fish_ascii")"
+        caught_at=$(jq -r '.caughtAt // empty' "$STATE_FILE" 2>/dev/null)
+        if [ -n "$caught_at" ]; then
+          caught_epoch=$(date -d "$caught_at" +%s 2>/dev/null || \
+                         date -j -f "%Y-%m-%dT%H:%M:%SZ" "$caught_at" +%s 2>/dev/null || echo 0)
+          catch_age=$(( $(date +%s) - caught_epoch ))
+        else
+          catch_age=0
         fi
-        glyph="~>!<~  ${fish_name} ${fish_ascii}"
+        if [ "$catch_age" -ge 10 ]; then
+          glyph="~~*~~"
+        else
+          fish_name=$(jq -r '.catch.common // ""' "$STATE_FILE" 2>/dev/null)
+          fish_ascii=$(jq -r '.catch.ascii // ""' "$STATE_FILE" 2>/dev/null)
+          fish_color=$(jq -r '.catch.color // ""' "$STATE_FILE" 2>/dev/null)
+          if [ -n "$fish_color" ]; then
+            fish_ascii="$(printf '\033[38;5;%sm%s\033[0m' "$fish_color" "$fish_ascii")"
+          fi
+          glyph="~>!<~  ${fish_name} ${fish_ascii}"
+        fi
       else
         glyph="~~*~~"
       fi

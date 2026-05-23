@@ -1,6 +1,6 @@
 # Spec 11 — Agentic File Optimization
 
-**Status:** `IN PROGRESS`
+**Status:** `COMPLETE`
 **Depends on:** All existing specs (cross-cutting concern)
 
 ## Goal
@@ -168,17 +168,17 @@ The hook is the primary writer of `session.json`. `/gone-fishing` also writes `s
 
 ## Acceptance Criteria
 
-- [ ] ARCHITECTURE.md contains no "Current state" paragraphs; spec statuses are authoritative.
-- [ ] `glossary.md` is deleted; its `@`-import is removed from `CLAUDE.md`.
-- [ ] `CLAUDE.md` has a Conventions section covering the five points above.
-- [ ] `gone-fishing.md` state file section uses a field table, not full JSON examples.
+- [x] ARCHITECTURE.md contains no "Current state" paragraphs; spec statuses are authoritative.
+- [x] `glossary.md` is deleted; its `@`-import is removed from `CLAUDE.md`.
+- [x] `CLAUDE.md` has a Conventions section covering the five points above.
+- [x] `gone-fishing.md` state file section uses a field table, not full JSON examples.
 - [x] `settings.json` allows Read on the full gone-fishing data directory without prompting.
-- [ ] Total size of always-loaded context (CLAUDE.md + @-imports) is reduced by at least 30%.
-- [ ] `gone-fishing.md` per-turn section has no idle write step; no-catch turns produce zero file I/O.
-- [ ] `state.json` schema drops the `active` field; `session.json` is written once at activation.
-- [ ] Statusline renders idle frame when `state == "caught"` and `elapsed >= 10s` without a file read/write.
+- [x] Total size of always-loaded context (CLAUDE.md + @-imports) is reduced by at least 30% (34.3%; 6,012 → 3,949 bytes).
+- [x] `gone-fishing.md` per-turn section has no idle write step; no-catch turns produce zero file I/O.
+- [x] `state.json` schema drops the `active` field; `session.json` is written once at activation.
+- [x] Statusline renders idle frame when `state == "caught"` and `elapsed >= 10s` without a file read/write.
 - [x] Statusline uses `activatedAt` timestamp from `session.json` for active-glyph logic.
-- [ ] `/gone-fishing` writes `session.json` on explicit invocation.
+- [x] `/gone-fishing` writes `session.json` on explicit invocation.
 - [x] `~/.claude/hooks/gone-fishing-session.sh` installed by `scripts/install.sh`; fires on every `UserPromptSubmit`.
 - [x] Hook exits silently when `profile.json` is absent (user has never fished).
 - [x] Hook writes `session.json` on session start and injects `[gone-fishing] <Name> is on the line...` notice.
