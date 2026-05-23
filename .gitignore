@@ -20,3 +20,6 @@ Thumbs.db
 
 # Node (in case tooling gets added)
 node_modules/
+
+# Claude Code subagent worktrees
+.claude/worktrees/

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CMD_SRC="$(cd "$(dirname "$0")/.." && pwd)/.claude/commands/gone-fishing"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+CMD_SRC="$REPO_ROOT/.claude/commands/gone-fishing"
 CMD_DST="$HOME/.claude/commands"
 DATA_DST="$HOME/.claude/commands/refs/gone-fishing"
 STATUSLINE_SCRIPT="$HOME/.claude/statusline-command.sh"
@@ -32,17 +33,14 @@ cat > "$STATUSLINE_SCRIPT" << 'EOF'
 input=$(cat)
 
 model=$(echo "$input" | jq -r '.model.display_name // "unknown"')
-
 used=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
 if [ -n "$used" ]; then
   ctx=$(printf "ctx:%.0f%%" "$used")
 else
   ctx="ctx:--"
 fi
-
 effort_level=$(echo "$input" | jq -r '.effort.level // empty')
 thinking=$(echo "$input" | jq -r '.thinking.enabled // false')
-
 if [ -n "$effort_level" ]; then
   mode="effort:${effort_level}"
 elif [ "$thinking" = "true" ]; then
@@ -50,33 +48,33 @@ elif [ "$thinking" = "true" ]; then
 else
   mode=""
 fi
-
 parts="$model | $ctx"
-if [ -n "$mode" ]; then
-  parts="$parts | $mode"
-fi
+[ -n "$mode" ] && parts="$parts | $mode"
 
 STATE_FILE="$HOME/.claude/commands/refs/gone-fishing/refs/state.json"
 if [ -f "$STATE_FILE" ]; then
   fisher=$(jq -r '.fishermanName // empty' "$STATE_FILE" 2>/dev/null)
-  state=$(jq -r '.state // "idle"' "$STATE_FILE" 2>/dev/null)
+  fish_state=$(jq -r '.state // "idle"' "$STATE_FILE" 2>/dev/null)
+  active=$(jq -r '.active // false' "$STATE_FILE" 2>/dev/null)
   if [ -n "$fisher" ]; then
-    if [ "$state" = "caught" ]; then
+    if [ "$fish_state" = "caught" ]; then
       fish_name=$(jq -r '.catch.common // ""' "$STATE_FILE" 2>/dev/null)
       fish_ascii=$(jq -r '.catch.ascii // ""' "$STATE_FILE" 2>/dev/null)
       fish_color=$(jq -r '.catch.color // ""' "$STATE_FILE" 2>/dev/null)
       if [ -n "$fish_color" ]; then
         fish_ascii="$(printf '\033[38;5;%sm%s\033[0m' "$fish_color" "$fish_ascii")"
       fi
-      fishing="🎣 ${fisher}  ~|!!  ${fish_name} ${fish_ascii}"
+      glyph="~>!<~  ${fish_name} ${fish_ascii}"
+    elif [ "$active" = "true" ]; then
+      glyph="~~*~~"
     else
-      fishing="🎣 ${fisher}  ~|°"
+      glyph="~~~~~"
     fi
-    parts="$parts | $fishing"
+    parts="$parts | 🎣 ${fisher}  ${glyph}"
   fi
 fi
 
-printf "%s" "$parts"
+printf '%s' "$parts"
 EOF
 chmod +x "$STATUSLINE_SCRIPT"
 echo "  statusline-command.sh written"

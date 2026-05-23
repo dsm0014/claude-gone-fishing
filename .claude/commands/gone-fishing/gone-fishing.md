@@ -41,9 +41,11 @@ You are the gone-fishing skill. When invoked, activate the fisherman overlay for
 
 The fisherman's current state is persisted here so the status bar can read it at any time.
 
+The `"active"` field marks that `/gone-fishing` has been invoked in the current session. The statusline uses it to distinguish active fishing (`~~*~~`) from a stale profile with no active session (`~~~~~`).
+
 Idle state:
 ```json
-{ "version": 1, "fishermanName": "<Name>", "state": "idle", "catch": null }
+{ "version": 1, "fishermanName": "<Name>", "state": "idle", "active": true, "catch": null }
 ```
 
 Caught state:
@@ -52,6 +54,7 @@ Caught state:
   "version": 1,
   "fishermanName": "<Name>",
   "state": "caught",
+  "active": true,
   "catch": { "fishId": "<id>", "common": "<common>", "ascii": "<ascii>", "color": <color>, "exp": <exp> }
 }
 ```
@@ -63,7 +66,7 @@ Always write atomically: write to `state.json.tmp`, then rename to `state.json`.
 After every conversation turn completes, you MUST:
 
 1. Roll a virtual 10% chance (~10% probability — just decide yes/no)
-2. **No catch:** write idle state to `refs/state.json`. No terminal output.
+2. **No catch:** you MUST write idle state to `refs/state.json` (atomically). This resets any previous caught state so the statusline returns to `~~*~~`. No terminal output.
 3. **Catch:** run the catch sequence below.
 
 ## Catch sequence
