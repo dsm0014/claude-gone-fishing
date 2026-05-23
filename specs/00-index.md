@@ -15,3 +15,4 @@ All feature specs for `claude-gone-fishing`. Statuses: `TODO` | `IN PROGRESS` | 
 | 09 | [Southeast Louisiana Regional Fish](./09-southeast-louisiana-fish.md) | TODO |
 | 10 | [Regional Human Fishermen](./10-regional-fishermen.md) | TODO |
 | 11 | [Agentic File Optimization](./11-agentic-file-optimization.md) | IN PROGRESS |
+| 12 | [Shell Catch Hook](./12-shell-catch-hook.md) | IN PROGRESS |

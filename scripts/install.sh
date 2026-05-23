@@ -8,6 +8,7 @@ DATA_DST="$HOME/.claude/commands/refs/gone-fishing"
 STATUSLINE_SCRIPT="$HOME/.claude/statusline-command.sh"
 HOOK_DIR="$HOME/.claude/hooks"
 HOOK_SCRIPT="$HOOK_DIR/gone-fishing-session.sh"
+CATCH_HOOK_SCRIPT="$HOOK_DIR/gone-fishing-catch.sh"
 SETTINGS_FILE="$HOME/.claude/settings.json"
 
 echo "Installing gone-fishing command..."
@@ -33,6 +34,12 @@ echo "  writing gone-fishing-session.sh..."
 cp "$REPO_ROOT/scripts/gone-fishing-session-hook.sh" "$HOOK_SCRIPT"
 chmod +x "$HOOK_SCRIPT"
 echo "  gone-fishing-session.sh written"
+
+# ── Catch hook ────────────────────────────────────────────────────────────────
+echo "  writing gone-fishing-catch.sh..."
+cp "$REPO_ROOT/scripts/gone-fishing-catch-hook.sh" "$CATCH_HOOK_SCRIPT"
+chmod +x "$CATCH_HOOK_SCRIPT"
+echo "  gone-fishing-catch.sh written"
 
 # ── Statusline ───────────────────────────────────────────────────────────────
 echo "  writing statusline-command.sh..."
@@ -156,23 +163,33 @@ FISHING_PERMS='[
   "Bash(mv ~/.claude/commands/refs/gone-fishing/refs/*.tmp ~/.claude/commands/refs/gone-fishing/refs/*)"
 ]'
 SESSION_HOOK_ENTRY='{"matcher":"","hooks":[{"type":"command","command":"'"$HOOK_SCRIPT"'"}]}'
+CATCH_HOOK_ENTRY='{"matcher":"","hooks":[{"type":"command","command":"'"$CATCH_HOOK_SCRIPT"'"}]}'
 if [ -f "$SETTINGS_FILE" ]; then
   tmp=$(mktemp)
   jq --arg s "$STATUSLINE_SCRIPT" --argjson perms "$FISHING_PERMS" \
-     --argjson hook "$SESSION_HOOK_ENTRY" '
+     --argjson hook "$SESSION_HOOK_ENTRY" \
+     --argjson catch_hook "$CATCH_HOOK_ENTRY" '
     .statusLine = {type: "command", command: $s} |
     .permissions.allow = ((.permissions.allow // []) + $perms | unique) |
     .hooks.UserPromptSubmit = (
       (.hooks.UserPromptSubmit // []) |
       map(select(.hooks[0].command != $hook.hooks[0].command)) + [$hook]
+    ) |
+    .hooks.Stop = (
+      (.hooks.Stop // []) |
+      map(select(.hooks[0].command != $catch_hook.hooks[0].command)) + [$catch_hook]
     )
   ' "$SETTINGS_FILE" > "$tmp" && mv "$tmp" "$SETTINGS_FILE"
 else
   jq -n --arg s "$STATUSLINE_SCRIPT" --argjson perms "$FISHING_PERMS" \
-     --argjson hook "$SESSION_HOOK_ENTRY" '{
+     --argjson hook "$SESSION_HOOK_ENTRY" \
+     --argjson catch_hook "$CATCH_HOOK_ENTRY" '{
     statusLine: {type: "command", command: $s},
     permissions: {allow: $perms},
-    hooks: {UserPromptSubmit: [$hook]}
+    hooks: {
+      UserPromptSubmit: [$hook],
+      Stop: [$catch_hook]
+    }
   }' > "$SETTINGS_FILE"
 fi
 echo "  settings.json updated"
