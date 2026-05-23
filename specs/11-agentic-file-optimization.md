@@ -94,7 +94,7 @@ The current allowlist generates prompts for read operations on the data director
 
 ---
 
-### 6. Per-turn state writes — eliminate idle resets, push expiry into statusline
+### 6. Per-turn state writes — eliminate idle resets, push expiry into statusline *(partially complete)*
 
 **The problem:** `gone-fishing.md` currently requires Claude to write `state.json` on every conversation turn — both on catch (correct) and on no-catch (wasteful). No-catch turns are ~90% of all turns. Each one triggers a silent `mv` permission call with zero user-visible effect. Writing `active: true` every turn is also the only reason the active-session glyph (`~~*~~`) works — without it, the flag goes stale.
 
@@ -125,9 +125,11 @@ The statusline shows `~~*~~` if `session.json` exists and `activatedAt` is withi
 - Catch turns (10%): one atomic write to `state.json` + one append to `catches.json` — same as today
 - `/gone-fishing` activation: one additional write to `session.json` — negligible
 
+**What's done (branch `enhance-agentic-files`):** Sub-item 6c is complete — the statusline reads `session.json.activatedAt` for the active-glyph decision and no longer depends on the `active` field in `state.json`. Sub-items 6a and 6b remain open: `gone-fishing.md` still instructs an idle write on every no-catch turn, and the statusline does not yet do elapsed-based expiry of the caught state.
+
 ---
 
-### 7. Auto-activate fishing via `UserPromptSubmit` hook
+### 7. Auto-activate fishing via `UserPromptSubmit` hook *(complete)*
 
 **The problem:** After running `/gone-fishing` once to assign a fisherman, the user must re-run it at the start of every new session. There is no mechanism to persist the "fishing is active" intent across sessions without user action.
 
@@ -160,6 +162,8 @@ The hook is the primary writer of `session.json`. `/gone-fishing` also writes `s
 - `scripts/install.sh` copies `scripts/gone-fishing-session-hook.sh` to `~/.claude/hooks/gone-fishing-session.sh`
 - `install.sh` adds a `UserPromptSubmit` hook entry to `~/.claude/settings.json` pointing at that script
 
+**What's done (branch `enhance-agentic-files`):** All of item 7 is implemented. `scripts/gone-fishing-session-hook.sh` exists and handles all cases (no profile → silent exit; session < 8 h → reuse and inject; otherwise → write fresh `session.json` and inject). `scripts/install.sh` deploys the hook and writes the `UserPromptSubmit` entry to `~/.claude/settings.json`.
+
 ---
 
 ## Acceptance Criteria
@@ -168,14 +172,15 @@ The hook is the primary writer of `session.json`. `/gone-fishing` also writes `s
 - [ ] `glossary.md` is deleted; its `@`-import is removed from `CLAUDE.md`.
 - [ ] `CLAUDE.md` has a Conventions section covering the five points above.
 - [ ] `gone-fishing.md` state file section uses a field table, not full JSON examples.
-- [ ] `settings.json` allows Read on the full gone-fishing data directory without prompting.
+- [x] `settings.json` allows Read on the full gone-fishing data directory without prompting.
 - [ ] Total size of always-loaded context (CLAUDE.md + @-imports) is reduced by at least 30%.
 - [ ] `gone-fishing.md` per-turn section has no idle write step; no-catch turns produce zero file I/O.
 - [ ] `state.json` schema drops the `active` field; `session.json` is written once at activation.
 - [ ] Statusline renders idle frame when `state == "caught"` and `elapsed >= 10s` without a file read/write.
-- [ ] `/gone-fishing` writes `session.json`; statusline uses `activatedAt` timestamp for active-glyph logic.
-- [ ] `~/.claude/hooks/gone-fishing-session.sh` installed by `scripts/install.sh`; fires on every `UserPromptSubmit`.
-- [ ] Hook exits silently when `profile.json` is absent (user has never fished).
-- [ ] Hook writes `session.json` on session start and injects `[gone-fishing] <Name> is on the line...` notice.
-- [ ] Hook reuses existing `session.json` if `activatedAt` is less than 8 hours old.
-- [ ] `settings.json` has a `UserPromptSubmit` hook entry pointing at the hook script after install.
+- [x] Statusline uses `activatedAt` timestamp from `session.json` for active-glyph logic.
+- [ ] `/gone-fishing` writes `session.json` on explicit invocation.
+- [x] `~/.claude/hooks/gone-fishing-session.sh` installed by `scripts/install.sh`; fires on every `UserPromptSubmit`.
+- [x] Hook exits silently when `profile.json` is absent (user has never fished).
+- [x] Hook writes `session.json` on session start and injects `[gone-fishing] <Name> is on the line...` notice.
+- [x] Hook reuses existing `session.json` if `activatedAt` is less than 8 hours old.
+- [x] `settings.json` has a `UserPromptSubmit` hook entry pointing at the hook script after install.
