@@ -1276,17 +1276,6 @@
     "flavor": "Federally threatened; summers feeding in Gulf shallows, winters fasting in freshwater rivers — a living relic of the Cretaceous."
   },
   {
-    "id": "sacalait",
-    "common": "Sacalait",
-    "scientific": "Pomoxis annularis",
-    "habitat": "freshwater",
-    "rarity": "common",
-    "ascii": "><((º>",
-    "color": 144,
-    "exp": 28,
-    "flavor": "The Cajun name 'Sacalait' — meaning 'bag of milk' in French — is how South Louisiana has always known this sweet, white-fleshed panfish from the cypress swamps."
-  },
-  {
     "id": "red-drum",
     "common": "Red Drum",
     "scientific": "Sciaenops ocellatus",
