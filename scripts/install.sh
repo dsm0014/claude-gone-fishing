@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CMD_SRC="$(cd "$(dirname "$0")/.." && pwd)/.claude/commands/gone-fishing"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+CMD_SRC="$REPO_ROOT/.claude/commands/gone-fishing"
 CMD_DST="$HOME/.claude/commands"
 DATA_DST="$HOME/.claude/commands/refs/gone-fishing"
 STATUSLINE_SCRIPT="$HOME/.claude/statusline-command.sh"
@@ -28,21 +29,18 @@ done
 echo "  writing statusline-command.sh..."
 cat > "$STATUSLINE_SCRIPT" << 'EOF'
 #!/usr/bin/env bash
-# Claude Code status line: model | context % | effort/thinking | fisherman
+# Claude Code status line: ASCII fisherman (multi-line, right-aligned) + model info
 input=$(cat)
 
 model=$(echo "$input" | jq -r '.model.display_name // "unknown"')
-
 used=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
 if [ -n "$used" ]; then
   ctx=$(printf "ctx:%.0f%%" "$used")
 else
   ctx="ctx:--"
 fi
-
 effort_level=$(echo "$input" | jq -r '.effort.level // empty')
 thinking=$(echo "$input" | jq -r '.thinking.enabled // false')
-
 if [ -n "$effort_level" ]; then
   mode="effort:${effort_level}"
 elif [ "$thinking" = "true" ]; then
@@ -50,33 +48,132 @@ elif [ "$thinking" = "true" ]; then
 else
   mode=""
 fi
-
 parts="$model | $ctx"
-if [ -n "$mode" ]; then
-  parts="$parts | $mode"
+[ -n "$mode" ] && parts="$parts | $mode"
+
+REFS="$HOME/.claude/commands/refs/gone-fishing"
+PROFILE="$REFS/refs/profile.json"
+STATE_FILE="$REFS/refs/state.json"
+FISHERMEN_FILE="$REFS/fishermen.json"
+
+if [ ! -f "$PROFILE" ] || [ ! -f "$STATE_FILE" ]; then
+  printf '%s' "$parts"
+  exit 0
 fi
 
-STATE_FILE="$HOME/.claude/commands/refs/gone-fishing/refs/state.json"
-if [ -f "$STATE_FILE" ]; then
-  fisher=$(jq -r '.fishermanName // empty' "$STATE_FILE" 2>/dev/null)
-  state=$(jq -r '.state // "idle"' "$STATE_FILE" 2>/dev/null)
-  if [ -n "$fisher" ]; then
-    if [ "$state" = "caught" ]; then
-      fish_name=$(jq -r '.catch.common // ""' "$STATE_FILE" 2>/dev/null)
-      fish_ascii=$(jq -r '.catch.ascii // ""' "$STATE_FILE" 2>/dev/null)
-      fish_color=$(jq -r '.catch.color // ""' "$STATE_FILE" 2>/dev/null)
-      if [ -n "$fish_color" ]; then
-        fish_ascii="$(printf '\033[38;5;%sm%s\033[0m' "$fish_color" "$fish_ascii")"
-      fi
-      fishing="🎣 ${fisher}  ~|!!  ${fish_name} ${fish_ascii}"
-    else
-      fishing="🎣 ${fisher}  ~|°"
-    fi
-    parts="$parts | $fishing"
+fisherman_id=$(jq -r '.fishermanId // ""' "$PROFILE" 2>/dev/null)
+if [ -z "$fisherman_id" ]; then
+  printf '%s' "$parts"
+  exit 0
+fi
+
+fish_state=$(jq -r '.state // "idle"' "$STATE_FILE" 2>/dev/null)
+anim_start=$(jq -r '.animStartAt // 0' "$STATE_FILE" 2>/dev/null)
+NOW=$(date +%s)
+elapsed=$(( NOW - ${anim_start:-0} ))
+
+frame_key="idle"
+if [ "$fish_state" = "caught" ]; then
+  if [ "$elapsed" -lt 2 ]; then
+    frame_key="hooking"
+  elif [ "$elapsed" -lt 4 ]; then
+    frame_key="retrieving"
+  else
+    frame_key="display"
   fi
 fi
 
-printf "%s" "$parts"
+fisherman_name=$(jq -r '.fishermanName // ""' "$STATE_FILE" 2>/dev/null)
+active=$(jq -r '.active // false' "$STATE_FILE" 2>/dev/null)
+if [ -n "$fisherman_name" ]; then
+  if [ "$fish_state" = "caught" ]; then
+    glyph="~>!<~"
+  elif [ "$active" = "true" ]; then
+    glyph="~~*~~"
+  else
+    glyph="~~~~~"
+  fi
+  parts="$parts | 🎣 ${fisherman_name}  ${glyph}"
+fi
+
+mapfile -t ART_LINES < <(jq -r \
+  --arg id "$fisherman_id" --arg key "$frame_key" \
+  '.[] | select(.id == $id) | .frames[$key][]' \
+  "$FISHERMEN_FILE" 2>/dev/null)
+
+if [ ${#ART_LINES[@]} -eq 0 ]; then
+  printf '%s' "$parts"
+  exit 0
+fi
+
+if [ "$frame_key" = "display" ] && [ "$fish_state" = "caught" ]; then
+  fish_ascii=$(jq -r '.catch.ascii // ""' "$STATE_FILE" 2>/dev/null)
+  fish_color=$(jq -r '.catch.color // 15' "$STATE_FILE" 2>/dev/null)
+  fish_name=$(jq -r '.catch.common // ""' "$STATE_FILE" 2>/dev/null)
+  fish_exp=$(jq -r '.catch.exp // 0' "$STATE_FILE" 2>/dev/null)
+  colored_fish=$(printf '\033[38;5;%sm%s\033[0m' "$fish_color" "$fish_ascii")
+  ART_LINES[0]="${ART_LINES[0]}  ${colored_fish}"
+  if [ "${#ART_LINES[@]}" -gt 1 ]; then
+    ART_LINES[1]="${ART_LINES[1]}  ${fish_name} (+${fish_exp})"
+  fi
+fi
+
+# Terminal width via parent process TTY chain (same technique as claude-buddy)
+COLS=0
+_pid=$$
+for _ in 1 2 3 4 5; do
+  _pid=$(ps -o ppid= -p "$_pid" 2>/dev/null | tr -d ' ')
+  [ -z "$_pid" ] || [ "$_pid" = "1" ] && break
+  _pty=$(readlink "/proc/${_pid}/fd/0" 2>/dev/null)
+  if [ -c "$_pty" ] 2>/dev/null; then
+    COLS=$(stty size < "$_pty" 2>/dev/null | awk '{print $2}')
+    { [ "${COLS:-0}" -gt 40 ] 2>/dev/null && break; } || true
+  fi
+  _tty=$(ps -o tty= -p "$_pid" 2>/dev/null | tr -d ' ')
+  if [ -n "$_tty" ] && [ "$_tty" != "??" ] && [ "$_tty" != "?" ]; then
+    _tty_dev="/dev/$_tty"
+    if [ -c "$_tty_dev" ] 2>/dev/null; then
+      COLS=$(stty size < "$_tty_dev" 2>/dev/null | awk '{print $2}')
+      { [ "${COLS:-0}" -gt 40 ] 2>/dev/null && break; } || true
+    fi
+  fi
+done
+[ "${COLS:-0}" -lt 40 ] && COLS=$(tput cols 2>/dev/null)
+[ "${COLS:-0}" -lt 40 ] && COLS=${COLUMNS:-80}
+[ "${COLS:-0}" -lt 80 ] && { printf '%s' "$parts"; exit 0; }
+
+MARGIN=8
+
+# Apply water fill before computing ART_W so PAD accounts for extended rows
+_wlen=$(( MARGIN - 3 ))
+if [ "$_wlen" -gt 0 ]; then
+  _wfill=$(printf '~%.0s' $(seq 1 "$_wlen"))
+  for i in "${!ART_LINES[@]}"; do
+    case "${ART_LINES[$i]}" in *'~') ART_LINES[$i]="${ART_LINES[$i]}${_wfill}" ;; esac
+  done
+fi
+
+ART_W=0
+for _line in "${ART_LINES[@]}"; do
+  [ "${#_line}" -gt "$ART_W" ] && ART_W="${#_line}"
+done
+
+PAD=$(( COLS - ART_W - MARGIN ))
+if [ "$PAD" -lt 30 ]; then
+  printf '%s' "$parts"
+  exit 0
+fi
+
+B=$'\xe2\xa0\x80'  # Braille Blank U+2800 — survives Claude Code's whitespace trim
+SPACER=$(printf "${B}%${PAD}s" "")
+NC=$'\033[0m'
+C=$'\033[38;5;15m'
+
+printf '%s\n' "$parts"
+
+for _line in "${ART_LINES[@]}"; do
+  printf '%s%s%s\n' "$SPACER" "${C}${_line}${NC}"
+done
 EOF
 chmod +x "$STATUSLINE_SCRIPT"
 echo "  statusline-command.sh written"
