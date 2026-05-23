@@ -82,6 +82,41 @@ After every conversation turn completes, you MUST:
    ```
    🎣 Fish on the line!  <Common Name>  <ascii>  (+<exp> EXP)
    ```
+5. Run the level-up check (see Leveling section below)
+
+## Leveling
+
+EXP is the sum of all `exp` fields in `catches.json`. Level (max 50) is derived using:
+- threshold(n) = 100 + (n - 1) * 50
+- cumulative XP to reach level n = 25 * (n - 1) * (n + 2)
+- currentLevel = highest n where cumulative(n) ≤ totalExp
+
+### Level-up check (step 5 of the catch sequence)
+
+Before appending to `catches.json`, sum the current catches to get `prevTotal`.
+After appending, `newTotal = prevTotal + fish.exp`.
+Derive `prevLevel` and `newLevel`. If `newLevel > prevLevel`, print immediately after the
+catch notification (on a new line):
+
+    ★ LEVEL UP! <Name> reached Level <N>! ★
+        Rod upgraded → <Tier Name>
+
+Tier names by level range:
+
+| Levels | Tier Name       |
+|--------|-----------------|
+| 1–4    | Willow Branch   |
+| 5–9    | Bamboo Rod      |
+| 10–14  | Fiberglass Rod  |
+| 15–19  | Spinning Rod    |
+| 20–24  | Baitcaster      |
+| 25–29  | Carbon Fiber    |
+| 30–34  | Fly Rod         |
+| 35–39  | Surf Rod        |
+| 40–44  | Gilded Rod      |
+| 45–50  | Celestial Rod   |
+
+At level 50 cap: no level-up fires; EXP still logs normally.
 
 ## Error handling
 

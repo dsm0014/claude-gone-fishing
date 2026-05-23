@@ -7,7 +7,7 @@
 
 ## Purpose
 
-Defines how fishing experience (EXP) accrues from catches, how the fisherman advances through 50 levels, and how leveling up visually upgrades the fishing rod in all ASCII art frames.
+Defines how fishing experience (EXP) accrues from catches, how the fisherman advances through 50 levels, and how progression is communicated visually through the statusline. Level is expressed as a color applied to the lure glyph (`*`) and the level label (`Lv.NN`) in the statusline — the same color, so both read as one visual unit. No ASCII art frame changes are part of this spec.
 
 ---
 
@@ -72,80 +72,26 @@ Level is always derived from total lifetime EXP — never stored as a raw number
 
 ---
 
-## EXP Bar Display
+## Lure & Level Color Tiers
 
-Rendered below the fisherman ASCII art during the idle frame and after each catch. Always shown when `/gone-fishing` is active.
+Every 5 levels the lure color upgrades. The tier color applies to two things in the statusline: the lure glyph (`*`) and the level label (`Lv.NN`). Both render in the same color so they read as a matched pair.
 
-### Format
+| Levels | Tier | Name | ANSI Escape |
+|--------|------|------|-------------|
+| 1–4 | 1 | Willow Branch | none (default) |
+| 5–9 | 2 | Bamboo Rod | `\e[33m` dim yellow |
+| 10–14 | 3 | Fiberglass Rod | `\e[37m` light gray |
+| 15–19 | 4 | Spinning Rod | `\e[36m` cyan |
+| 20–24 | 5 | Baitcaster | `\e[92m` bright green |
+| 25–29 | 6 | Carbon Fiber | `\e[1;90m` bold dark gray |
+| 30–34 | 7 | Fly Rod | `\e[94m` bright blue |
+| 35–39 | 8 | Surf Rod | `\e[96m` bright cyan |
+| 40–44 | 9 | Gilded Rod | `\e[1;33m` bold yellow (gold) |
+| 45–50 | 10 | Celestial Rod | `\e[1;95m` bold bright magenta |
 
-```
-Lv.12  ████████████░░░░░░░░  800 / 1100 XP
-```
+The color jump is the primary signal that a tier has changed. The first four tiers are subtle; tiers 6–10 are increasingly vivid.
 
-- **Label:** `Lv.NN` (right-padded to 6 chars)
-- **Bar:** 20-character block — filled `█`, empty `░`
-  - Fill count = `floor(20 * expIntoLevel / expNeeded)`
-- **Fraction:** `NNNN / NNNN XP` (no leading zeros; right-aligned to the widest number in the current tier)
-- At level 50: `Lv.50  ████████████████████  MAX`
-
-### Placement
-
-The EXP bar is rendered as a single line directly below the fisherman's last ASCII frame row, at the same right-margin offset. It is part of the fisherman's render block, not inline with Claude's text.
-
-### Level-Up Notification
-
-When a catch pushes the fisherman to a new level, display a one-time inline notification **before** the normal EXP bar:
-
-```
-★ LEVEL UP! Grizzled Pete reached Level 13! ★
-    Rod upgraded → Carbon Fiber Spinning Rod
-```
-
-Then render the updated EXP bar showing the new level (possibly `0 / next_threshold XP`).
-
----
-
-## Rod Upgrade Tiers
-
-Every 5 levels the fishing rod visually upgrades. The rod tier governs which rod ASCII art **and color** is used in all four animation frames (idle, hooking, retrieving, display). Each fisherman character must have rod-art variants for all 10 tiers.
-
-| Levels | Tier | Name | Visual Character | ANSI Color |
-|--------|------|------|-----------------|------------|
-| 1–4 | 1 | Willow Branch | `\` with a short wiggly line | none (default) |
-| 5–9 | 2 | Bamboo Rod | `\|` — straight, notched | `\e[33m` dim yellow |
-| 10–14 | 3 | Fiberglass Rod | `\\` — two-tone | `\e[37m` light gray |
-| 15–19 | 4 | Spinning Rod | `\=` with small reel indicator | `\e[36m` cyan |
-| 20–24 | 5 | Baitcaster | `\≡` with reel and guide rings | `\e[92m` bright green |
-| 25–29 | 6 | Carbon Fiber | `\#` — sleek, dark | `\e[1;90m` bold dark gray |
-| 30–34 | 7 | Fly Rod | long `\~~~~` with a tapered tip | `\e[94m` bright blue |
-| 35–39 | 8 | Surf Rod | extra-long `\‾‾‾` with heavy guides | `\e[96m` bright cyan |
-| 40–44 | 9 | Gilded Rod | `\$` — ornate with gold trim | `\e[1;33m` bold yellow (gold) |
-| 45–50 | 10 | Celestial Rod | `\★` — glowing, star-tipped | `\e[1;95m` bold bright magenta |
-
-The color jump is the primary signal that a rod tier has changed — it should be immediately obvious even in a glance. The first four tiers are subtle; tiers 6–10 are increasingly vivid.
-
-### Rod Color Implementation
-
-Color wraps every rod character in all four frame states. The reset (`\e[0m`) is appended immediately after the last rod character in each row so body/water characters are unaffected.
-
-```
-// Pseudocode — applied at render time, not stored in frame data
-rodColor = ROD_COLORS[rodTier]   // ANSI escape string, or "" for tier 1
-colorize = (s) => rodColor + s + (rodColor ? "\e[0m" : "")
-```
-
-**Which characters get colorized:**
-- The rod shaft: all `/` and `\` characters that form the rod body
-- The rod tip and special characters: `★`, `$`, `≡`, `=`, `#`, `~~~~`, `‾‾‾`
-- The fishing line (`|` hanging from rod tip) — same color as the rod, so the whole rig reads as one unit
-
-**Tier 10 exception:** At Celestial Rod, the fish display frame's raised-arms row (`\(o)/`) also renders the `\` and `/` arm-characters in bold magenta, as if the rod's energy has transferred to the fisherman's whole pose.
-
-### Rod Art Derivation
-
-Each fisherman's `frames` object gains a `rodTier` override mechanism. The skill replaces the rod-region characters in the pre-authored ASCII frames with tier-appropriate characters at render time.
-
-Rod tier is derived from level at render time — it is not stored separately.
+Rod tier is derived from level at render time — never stored separately:
 
 ```
 rodTier = floor((currentLevel - 1) / 5) + 1   // clamps to 10 at level 50
@@ -153,23 +99,97 @@ rodTier = floor((currentLevel - 1) / 5) + 1   // clamps to 10 at level 50
 
 ---
 
+## Statusline Integration
+
+The statusline script (`statusline-command.sh`) reads `catches.json` on each tick to derive the current level and rod tier. It then applies the tier color to the lure glyph and level label.
+
+### Active session (between turns)
+
+```
+🎣 Kodiak Karl  ~~[TIER_COLOR]*[RESET]~~  [TIER_COLOR]Lv.5[RESET]
+```
+
+Example at tier 2 (dim yellow):
+
+```
+🎣 Kodiak Karl  ~~\e[33m*\e[0m~~  \e[33mLv.7\e[0m
+```
+
+### Caught state
+
+```
+🎣 Kodiak Karl  ~>!<~  [FISH_COLOR]Bluefin Tuna ><(((°>[RESET]  [TIER_COLOR]Lv.5[RESET]
+```
+
+The level label remains visible during a catch display.
+
+### Inactive state (profile exists, session not started)
+
+```
+🎣 Kodiak Karl  ~~~~~  Lv.5
+```
+
+No color applied in the inactive state — the lure is not in the water.
+
+### No profile
+
+Falls back gracefully; shows model/ctx only with no fishing elements.
+
+### Implementation note
+
+Computing level from `catches.json` on every statusline tick is acceptable — the file is small and the read is local. The statusline script must handle a missing `catches.json` (new user, no catches yet) by defaulting to level 1, tier 1.
+
+---
+
+## EXP Bar Display
+
+Shown in `/fishing-stats` output. Not rendered inline during conversation turns.
+
+### Format
+
+```
+Lv.12  ████████████░░░░░░░░  800 / 1100 XP
+```
+
+- **Label:** `Lv.NN` (right-padded to 6 chars), rendered in the current tier color
+- **Bar:** 20-character block — filled `█`, empty `░`, rendered in tier color
+  - Fill count = `floor(20 * expIntoLevel / expNeeded)`
+- **Fraction:** `NNNN / NNNN XP` (no leading zeros)
+- At level 50: `Lv.50  ████████████████████  MAX` (full bar, no fraction)
+
+---
+
+## Level-Up Notification
+
+When a catch pushes the fisherman to a new level, the skill emits a one-time inline notification as part of the catch response, before the updated EXP context:
+
+```
+★ LEVEL UP! Kodiak Karl reached Level 10! ★
+    Rod upgraded → Fiberglass Rod
+```
+
+The new tier name is included so the color change in the statusline has a name to anchor it to.
+
+---
+
 ## Persistence Changes
 
-EXP is fully reconstructed from `catches.json` at runtime (see level-up logic above). No separate EXP field is stored in `profile.json`. This keeps the persistence layer append-only and audit-friendly.
+EXP is fully reconstructed from `catches.json` at runtime. No separate EXP or level field is stored in `profile.json`. This keeps the persistence layer append-only and audit-friendly.
 
 ---
 
 ## Acceptance Criteria
 
 - [ ] Each fish in `fish.json` has an `exp` field within its tier range.
-- [ ] EXP bar renders correctly at idle with accurate fill, fraction, and level label.
-- [ ] EXP bar shows `MAX` at level 50 with a full bar.
 - [ ] Level is derived from total EXP in `catches.json` — not stored separately.
-- [ ] Level-up notification fires inline when a catch advances the level, naming the new rod tier.
-- [ ] Rod tier changes every 5 levels (1→2 at level 5, 2→3 at level 10, …).
-- [ ] All 10 rod tiers are visually distinct in both ASCII art shape and color.
-- [ ] Rod color wraps only rod/line characters — body, water, and fish characters remain default color.
-- [ ] ANSI reset (`\e[0m`) always follows the last colored character in each row.
-- [ ] Tier 10 Celestial Rod colors the arm characters in the display frame.
-- [ ] EXP bar placement does not collide with Claude's text output.
+- [ ] Statusline shows `Lv.NN` in the current tier color next to the lure glyph.
+- [ ] Lure glyph `*` in `~~*~~` renders in the current tier color.
+- [ ] Lure glyph and level label share the same ANSI color (read as a matched pair).
+- [ ] No tier color is applied in the inactive state (`~~~~~`).
+- [ ] Level label remains visible during the caught state display.
+- [ ] Tier color updates immediately on the next statusline tick after a level-crossing catch.
+- [ ] Missing `catches.json` defaults to level 1, tier 1 (no color) without error.
+- [ ] EXP bar renders correctly in `/fishing-stats` with accurate fill, fraction, and tier-colored label.
+- [ ] EXP bar shows `MAX` at level 50 with a full bar.
+- [ ] Level-up notification fires inline when a catch advances the level, naming the new tier.
 - [ ] At level 50 cap, further catches still log EXP but the bar reads `MAX` and no level-up fires.
