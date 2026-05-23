@@ -1,6 +1,6 @@
 ---
 name: gone-fishing
-description: Activates the ASCII fisherman overlay for this session. After each conversation turn, rolls a 10% chance to catch a fish, logging the catch and updating the statusline. Run on first use to assign a random fisherman from the roster.
+description: Activates the ASCII fisherman overlay for this session. Catches are rolled automatically by a background hook after each turn. Run on first use to assign a random fisherman from the roster.
 user-invocable: true
 ---
 
@@ -61,62 +61,6 @@ The fisherman's current state is persisted here so the status bar can read it at
 Session liveness (`~~*~~` vs `~~~~~`) is tracked by `session.json`, not `state.json`.
 
 Always write atomically: write to `state.json.tmp`, then rename to `state.json`.
-
-## Per-turn catch roll
-
-After every conversation turn completes, you MUST:
-
-1. Roll a virtual 10% chance (~10% probability — just decide yes/no)
-2. **No catch:** nothing to do. No file I/O, no terminal output. The statusline expires the caught display automatically after 10 seconds via `caughtAt`.
-3. **Catch:** run the catch sequence below.
-
-## Catch sequence
-
-1. Pick a random fish from `~/.claude/commands/refs/gone-fishing/fish.json`
-2. Write caught state to `refs/state.json` (atomically), including `"caughtAt": "<ISO 8601 UTC>"`
-3. Append to `refs/catches.json`:
-   - Read existing file (or start with `{ "version": 1, "catches": [] }` if missing/corrupt)
-   - Append: `{ "fishId": "<id>", "common": "<common>", "rarity": "<rarity>", "exp": <exp>, "timestamp": "<ISO 8601 UTC>" }`
-   - Write to `refs/catches.json.tmp`, rename to `refs/catches.json`
-4. Print a single terminal notification:
-   ```
-   🎣 Fish on the line!  <Common Name>  <ascii>  (+<exp> EXP)
-   ```
-5. Run the level-up check (see Leveling section below)
-
-## Leveling
-
-EXP is the sum of all `exp` fields in `catches.json`. Level (max 50) is derived using:
-- threshold(n) = 100 + (n - 1) * 50
-- cumulative XP to reach level n = 25 * (n - 1) * (n + 2)
-- currentLevel = highest n where cumulative(n) ≤ totalExp
-
-### Level-up check (step 5 of the catch sequence)
-
-Before appending to `catches.json`, sum the current catches to get `prevTotal`.
-After appending, `newTotal = prevTotal + fish.exp`.
-Derive `prevLevel` and `newLevel`. If `newLevel > prevLevel`, print immediately after the
-catch notification (on a new line):
-
-    ★ LEVEL UP! <Name> reached Level <N>! ★
-        Rod upgraded → <Tier Name>
-
-Tier names by level range:
-
-| Levels | Tier Name       |
-|--------|-----------------|
-| 1–4    | Willow Branch   |
-| 5–9    | Bamboo Rod      |
-| 10–14  | Fiberglass Rod  |
-| 15–19  | Spinning Rod    |
-| 20–24  | Baitcaster      |
-| 25–29  | Carbon Fiber    |
-| 30–34  | Fly Rod         |
-| 35–39  | Surf Rod        |
-| 40–44  | Gilded Rod      |
-| 45–50  | Celestial Rod   |
-
-At level 50 cap: no level-up fires; EXP still logs normally.
 
 ## Error handling
 

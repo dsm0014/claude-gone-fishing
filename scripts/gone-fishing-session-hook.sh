@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # UserPromptSubmit hook: auto-activates gone-fishing each session if profile exists.
-# Writes session.json once per session (within 8 hours); injects fishing context
-# into the conversation so Claude applies the per-turn catch roll without /gone-fishing.
+# Writes session.json once per session (within 8 hours); injects fishing context.
 REFS="$HOME/.claude/commands/refs/gone-fishing/refs"
 PROFILE="$REFS/profile.json"
 
@@ -18,7 +17,7 @@ if [ -f "$SESSION" ]; then
     age=$(( NOW_EPOCH - activated_epoch ))
     if [ "$age" -lt 28800 ]; then
       fisher_name=$(jq -r '.fishermanName // empty' "$SESSION" 2>/dev/null)
-      printf '[gone-fishing] %s is on the line. Apply the per-turn catch roll after responding.\n' "$fisher_name"
+      printf '[gone-fishing] %s is on the line.\n' "$fisher_name"
       exit 0
     fi
   fi
@@ -35,4 +34,4 @@ TMP="$SESSION.tmp"
 printf '{"version":1,"fishermanId":"%s","fishermanName":"%s","activatedAt":"%s"}\n' \
   "$fisher_id" "$fisher_name" "$NOW_ISO" > "$TMP" && mv "$TMP" "$SESSION"
 
-printf '[gone-fishing] %s is on the line. Apply the per-turn catch roll after responding.\n' "$fisher_name"
+printf '[gone-fishing] %s is on the line.\n' "$fisher_name"
