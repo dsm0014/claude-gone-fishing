@@ -65,6 +65,44 @@ STATE_FILE="$HOME/.claude/commands/refs/gone-fishing/refs/state.json"
 if [ -f "$SESSION_FILE" ]; then
   fisher=$(jq -r '.fishermanName // empty' "$SESSION_FILE" 2>/dev/null)
   if [ -n "$fisher" ]; then
+    CATCHES_FILE="$HOME/.claude/commands/refs/gone-fishing/refs/catches.json"
+    total_exp=0
+    if [ -f "$CATCHES_FILE" ]; then
+        total_exp=$(jq '[.catches[].exp // 0] | add // 0' "$CATCHES_FILE" 2>/dev/null || echo 0)
+    fi
+    [ -z "$total_exp" ] || [ "$total_exp" = "null" ] && total_exp=0
+
+    # Derive level (max 50). cumulative(n) = 25*(n-1)*(n+2)
+    level=1
+    for n in $(seq 2 50); do
+        cum=$(( 25 * (n-1) * (n+2) ))
+        if [ "$total_exp" -ge "$cum" ]; then level=$n; else break; fi
+    done
+
+    # Derive tier and ANSI color code
+    tier=$(( (level - 1) / 5 + 1 ))
+    [ "$tier" -gt 10 ] && tier=10
+    case $tier in
+        1) tier_code="" ;;
+        2) tier_code="33" ;;
+        3) tier_code="37" ;;
+        4) tier_code="36" ;;
+        5) tier_code="92" ;;
+        6) tier_code="1;90" ;;
+        7) tier_code="94" ;;
+        8) tier_code="96" ;;
+        9) tier_code="1;33" ;;
+        10) tier_code="1;95" ;;
+    esac
+    if [ -n "$tier_code" ]; then
+        colored_lure="$(printf '\033[%sm*\033[0m' "$tier_code")"
+        active_level="$(printf '\033[%smLv.%s\033[0m' "$tier_code" "$level")"
+    else
+        colored_lure="*"
+        active_level="Lv.${level}"
+    fi
+    inactive_level="Lv.${level}"
+
     activated_at=$(jq -r '.activatedAt // empty' "$SESSION_FILE" 2>/dev/null)
     activated_epoch=$(date -d "$activated_at" +%s 2>/dev/null || \
                       date -j -f "%Y-%m-%dT%H:%M:%SZ" "$activated_at" +%s 2>/dev/null || echo 0)
@@ -81,7 +119,7 @@ if [ -f "$SESSION_FILE" ]; then
           catch_age=0
         fi
         if [ "$catch_age" -ge 10 ]; then
-          glyph="~~*~~"
+          glyph="~~${colored_lure}~~"
         else
           fish_name=$(jq -r '.catch.common // ""' "$STATE_FILE" 2>/dev/null)
           fish_ascii=$(jq -r '.catch.ascii // ""' "$STATE_FILE" 2>/dev/null)
@@ -92,12 +130,16 @@ if [ -f "$SESSION_FILE" ]; then
           glyph="~>!<~  ${fish_name} ${fish_ascii}"
         fi
       else
-        glyph="~~*~~"
+        glyph="~~${colored_lure}~~"
       fi
     else
       glyph="~~~~~"
     fi
-    parts="$parts | 🎣 ${fisher}  ${glyph}"
+    if [ "$age" -lt 28800 ]; then
+      parts="$parts | 🎣 ${fisher}  ${glyph}  ${active_level}"
+    else
+      parts="$parts | 🎣 ${fisher}  ~~~~~  ${inactive_level}"
+    fi
   fi
 fi
 
