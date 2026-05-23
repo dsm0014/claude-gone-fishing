@@ -82,14 +82,14 @@ The skill reads `~/.claude/commands/refs/gone-fishing/refs/catches.json`, aggreg
 
 ## Acceptance Criteria
 
-- [ ] `/fishing-stats` works with no active `/gone-fishing` session.
-- [ ] Fisherman section shows current character name and full backstory.
-- [ ] If no fisherman is assigned yet, fisherman section shows `No fisherman selected yet. Run /gone-fishing to meet yours!`
-- [ ] Level section shows correct level, rod tier name, EXP bar fill, and `current / threshold XP`.
-- [ ] EXP bar shows `MAX` at level 50.
-- [ ] All stat sections render correctly when data exists.
-- [ ] Summary shows total lifetime EXP earned.
-- [ ] Catches by Rarity section shows correct counts for all four tiers.
-- [ ] Friendly empty-state message shows when no catches are recorded.
-- [ ] Species count denominator reflects the actual fish pool size.
-- [ ] Timestamps display in local time (not UTC).
+- [x] `/fishing-stats` works with no active `/gone-fishing` session.
+- [x] Fisherman section shows current character name and full backstory.
+- [x] If no fisherman is assigned yet, fisherman section shows `No fisherman selected yet. Run /gone-fishing to meet yours!`
+- [x] Level section shows correct level, rod tier name, EXP bar fill, and `current / threshold XP`.
+- [x] EXP bar shows `MAX` at level 50.
+- [x] All stat sections render correctly when data exists.
+- [x] Summary shows total lifetime EXP earned.
+- [x] Catches by Rarity section shows correct counts for all four tiers.
+- [x] Friendly empty-state message shows when no catches are recorded.
+- [x] Species count denominator reflects the actual fish pool size.
+- [x] Timestamps display in local time (not UTC).
