@@ -116,10 +116,10 @@ See the [Spec 04 color guidelines](./04-fish-database.md#color-guidelines) and t
 
 ## Acceptance Criteria
 
-- [ ] All entries from the target species table are present in `fish.json`.
-- [ ] Each entry passes Spec 04 schema validation (all required fields including `color`, unique `id`, ascii ≤ 22 chars).
-- [ ] Every `color` value is an integer in the range 0–255.
-- [ ] EXP values fall within the correct rarity tier range (Spec 04 / Spec 08).
-- [ ] Cajun/regional common names include a `flavor` sentence that explains the local name or cultural context.
-- [ ] Habitat values are one of the six valid values from Spec 04.
-- [ ] No fictional species; all entries are real, verifiable fish found in Southeast Louisiana.
+- [x] All entries from the target species table are present in `fish.json`.
+- [x] Each entry passes Spec 04 schema validation (all required fields including `color`, unique `id`, ascii ≤ 22 chars).
+- [x] Every `color` value is an integer in the range 0–255.
+- [x] EXP values fall within the correct rarity tier range (Spec 04 / Spec 08).
+- [x] Cajun/regional common names include a `flavor` sentence that explains the local name or cultural context.
+- [x] Habitat values are one of the six valid values from Spec 04.
+- [x] No fictional species; all entries are real, verifiable fish found in Southeast Louisiana.
