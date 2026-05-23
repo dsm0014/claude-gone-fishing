@@ -1,116 +1,63 @@
 # Spec 02 — Animation System
 
-**Status:** `TODO`
+**Status:** `COMPLETE`
 **Depends on:** [04 Fish Database](./04-fish-database.md)
 
 ---
 
 ## Purpose
 
-Defines the ASCII art frames and sequencing logic for the fisherman overlay. All visual output is handled here.
+Defines the statusline glyph states and fish color rendering for the fisherman overlay. All visual output is delivered through the Claude Code statusline via `statusline-command.sh`.
 
-## Frame States
+## Statusline Glyph States
 
-All frames share the same bounding box: **8 rows tall, ~22 columns wide**. Characters must stay in the same position across all four states so transitions look like pose changes, not redraws.
+The statusline shows the active fisherman's name followed by a state glyph. There are three states:
 
-### 1. Idle
-The fisherman stands at the water's edge, rod extended, line dropped into the water. This is the default state between turns.
+| Glyph | Condition |
+|---|---|
+| `~~~~~` | Profile exists but `/gone-fishing` not run this session (`active: false`) |
+| `~~*~~` | `/gone-fishing` active, waiting between turns |
+| `~>!<~  <name> <ascii>` | Fish caught — displays colored fish name and ASCII art |
 
-```
-          |
-   _     /|
-  (o)   / |
-   \>--'  |
-   /\   ~~|~~
-  /  \~~~~|~~
-      ~~~~*~~
-```
-
-- Row 1: bare fishing line hanging from rod tip
-- Rows 2–3: head and rod arm (rod angled up-right with `/`)
-- Row 4: torso leaning into cast (`\>--'` connects body to rod)
-- Rows 5–6: legs with water surface rising behind them
-- Row 7: deeper water
-- Row 8: lure/bobber (`*`) resting at depth
-
-Rendered statically — no looping animation in idle to avoid terminal noise.
-
-### 2. Hooking
-Triggered immediately when a catch is rolled. Line snaps taut and horizontal. Display for ~1 second (or 1 render cycle).
+Example statusline output:
 
 ```
-  !!      |
-   _     /|
-  (!)   / |
-   \>--'  |
-   /\   ~~|~~
-  /  \~~~~|~~
-      ~~~XvX~
+claude-sonnet-4-6 | ctx:12% | 🎣 Kodiak Karl  ~~*~~
 ```
 
-- `!!` above head signals the strike
-- Head changes to `(!)` (eyes wide, startled)
-- Rod bends: `/` goes steeper (fish pulling down and away)
-- Line goes horizontal: `----*` shows the taut line with fish at end
-- Water unchanged — fish is below surface, just hooked
-
-### 3. Retrieving
-Animated: 2–3 frames showing the reel-in motion. Each frame held for ~0.5 seconds. Fish (`><`) rises toward the surface between frames.
+On a catch:
 
 ```
-Frame A (fish deep, line still taut):   Frame B (fish at surface, reel almost done):
-
-   _     /\                                 _     /\
-  (o)   / |                                (o)   / |
-   \>--'  |                                 \>--'  |
-   /*\  ~~|~~                               /*\  ~>^<~
-  /   \~~~|~~                              /   \~~~~~~
-       ~~>^<~                                   ~~~~~~
+claude-sonnet-4-6 | ctx:14% | 🎣 Kodiak Karl  ~>!<~  Bluefin Tuna ><(((°>
 ```
 
-- Frame A: `>^<` fish symbol appears at bottom of taut line
-- Frame B: `=` on rod shows reel tension; fish moves up the three water layers
-- The fisherman's expression returns to `(o)` — focused, not panicked
-- Body posture stays consistent; only line angle and fish position change
+## Fish Color Rendering
 
-### 4. Display (Catch Reveal)
-Fisherman raises both arms to hold the catch overhead. Fish ASCII art rendered above raised hands and name rendered to the right. Held for ~5 seconds before returning to idle.
+When a catch is displayed, the fish ASCII art is rendered in its species color using ANSI 256-color:
 
-```
- ><(((o>
-  \(o)/  Bluefin Tuna
-   \*/   
-   /*\   ~~~~~~
-  /   \~~~~~~~~
-       ~~~~~~~~
+```sh
+printf '\033[38;5;%sm%s\033[0m' "$fish_color" "$fish_ascii"
 ```
 
-- Arms raised: `\(o)/` instead of the normal rod-holding pose
-- Fish art (`><(((o>`) appears directly to the right of the raised hands
-- Fish name on the line below, aligned with the art
-- `\*/ ` for the forward facing torso — same waist as the idle/hooking poses
-- Water columns (`~~`, `~~~~`) stay on the right at the same position as all other frames — the fisherman is still standing at the bank, not out at sea
+`fish_color` is the 256-color code stored in the fish database entry (see [Spec 04](./04-fish-database.md)). The fish name is rendered in the default terminal color immediately after the colored art.
 
-The fish ASCII art is loaded from the fish database entry (see [Spec 04](./04-fish-database.md)). Each fish has its own art embedded in the database.
+## State File
 
-## Sequencing
+The statusline script reads `~/.claude/commands/refs/gone-fishing/refs/state.json` on every tick. Fields used:
 
-```
-Idle → (10% roll hits) → Hooking (1s) → Retrieving (1–1.5s) → Display (3s) → Idle
-```
+- `fishermanName` — displayed in the statusline
+- `state` — `"idle"` or `"caught"`
+- `active` — `true` when `/gone-fishing` has been invoked this session
+- `catch.common` — fish common name (caught state only)
+- `catch.ascii` — fish ASCII art (caught state only)
+- `catch.color` — ANSI 256-color code (caught state only)
 
-## Rendering Rules
-
-- All frames are drawn at a fixed terminal column offset (rightmost ~30 cols).
-- Use ANSI `\x1b[{row};{col}H` cursor positioning for each line of a frame.
-- After drawing, reset cursor to its original position so Claude's output is unaffected.
-- Save/restore cursor position with `\x1b[s` / `\x1b[u` around each render call.
-- Clear the previous frame before drawing the next using targeted line clears (`\x1b[2K` at each row used by the fisherman).
+No background process or cursor positioning is needed — the statusline polling drives all state transitions.
 
 ## Acceptance Criteria
 
-- [ ] All four frame states render correctly at the far right.
-- [ ] Frame transitions play in the correct order.
-- [ ] No cursor artifacts remain after each render cycle.
-- [ ] Display frame correctly injects the fish name and ASCII art from the database.
-- [ ] Rendering is a no-op when terminal width < 120 columns.
+- [x] Statusline shows `~~~~~` when a profile exists but the session is inactive.
+- [x] Statusline shows `~~*~~` while `/gone-fishing` is active between turns.
+- [x] Statusline shows `~>!<~` with the fish name and colored ASCII art on a catch.
+- [x] Fish ASCII art renders in its species ANSI 256-color.
+- [x] Statusline falls back gracefully (shows model/ctx only) when no profile exists.
