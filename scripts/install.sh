@@ -125,7 +125,7 @@ if [ -f "$SESSION_FILE" ]; then
         else
           catch_age=0
         fi
-        if [ "$catch_age" -ge 10 ]; then
+        if [ "$catch_age" -ge 120 ]; then
           glyph="~~${colored_lure}~~"
         else
           fish_name=$(jq -r '.catch.common // ""' "$STATE_FILE" 2>/dev/null)

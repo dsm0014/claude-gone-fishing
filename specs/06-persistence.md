@@ -14,6 +14,7 @@ Defines how catch data is stored and read across sessions. All data lives in the
 ~/.claude/commands/refs/gone-fishing/refs/
 ├── catches.json    # cumulative catch log
 ├── profile.json    # selected fisherman character
+├── session.json    # active session tracking and catch announcement state
 └── state.json      # current fisherman state for the statusline
 ```
 
@@ -84,6 +85,30 @@ Stores the user's currently selected fisherman (see [Spec 07](./07-fisherman-ros
 
 Same atomic write rules (tmp → rename) and corruption handling apply.
 
+## session.json Schema
+
+Tracks the active session so the `UserPromptSubmit` hook can skip re-writing on every turn and inject catch announcements exactly once:
+
+```json
+{
+  "version": 1,
+  "fishermanId": "kodiak-karl",
+  "fishermanName": "Kodiak Karl",
+  "activatedAt": "2026-05-23T13:00:00Z",
+  "lastAnnouncedCatchAt": "2026-05-23T13:44:52Z"
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `version` | number | Schema version |
+| `fishermanId` | string | Matches `id` in `fishermen.json` |
+| `fishermanName` | string | Denormalized display name |
+| `activatedAt` | string | ISO 8601 UTC timestamp; session expires after 8 hours |
+| `lastAnnouncedCatchAt` | string? | ISO 8601 UTC timestamp of the last catch the hook announced in-conversation. Absent until the first catch is announced. Compared against `state.json`'s `caughtAt` to prevent duplicate announcements across turns. |
+
+Written by the `UserPromptSubmit` hook on each turn: either creating it fresh (new session) or updating `lastAnnouncedCatchAt` when a new catch is detected. Same atomic write rules apply.
+
 ## state.json Schema
 
 Stores the fisherman's current state so the statusline script can read it without invoking Claude:
@@ -97,19 +122,21 @@ Stores the fisherman's current state so the statusline script can read it withou
 }
 ```
 
-When a fish is caught, `state` becomes `"caught"` and `catch` is populated:
+When a fish is caught, `state` becomes `"caught"`, `caughtAt` is set, and `catch` is populated:
 
 ```json
 {
   "version": 1,
   "fishermanName": "Grizzled Pete",
   "state": "caught",
+  "caughtAt": "2026-05-23T13:44:52Z",
   "catch": { "fishId": "rainbow-trout", "common": "Rainbow Trout", "ascii": "><(((º>", "color": 75, "exp": 30 }
 }
 ```
 
 | Field | Type | Description |
 |-------|------|-------------|
+| `caughtAt` | string? | ISO 8601 UTC timestamp of the catch. Used by the statusline to compute catch age and by the session hook to detect unannounced catches. Absent when `state` is `"idle"`. |
 | `catch.fishId` | string | Matches `id` in fish database |
 | `catch.common` | string | Common name, denormalized |
 | `catch.ascii` | string | ASCII art, snapshotted at catch time |
@@ -117,6 +144,8 @@ When a fish is caught, `state` becomes `"caught"` and `catch` is populated:
 | `catch.exp` | number | EXP awarded, snapshotted at catch time |
 
 Same atomic write rules (tmp → rename) apply. The statusline script reads this file on every refresh tick — it must never be left in a partially-written state.
+
+**Catch display window:** The statusline shows the caught fish for **120 seconds** after `caughtAt`. After that it reverts to the idle glyph. The 120-second window is intentionally wide to ensure the fish is still visible when the session hook injects the catch announcement into Turn N+1.
 
 ## No Cloud Sync
 

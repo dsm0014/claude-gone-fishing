@@ -30,5 +30,5 @@ EXP is derived at runtime by summing `catches[].exp` in `catches.json` — never
 - `catches.json` — append-only log: `{ version, catches: [{ fishId, common, rarity, exp, timestamp }] }`
 - `profile.json` — active character: `{ version, fishermanId, assignedAt }`
 - `state.json` — statusline state: `{ version, fishermanName, state, caughtAt, catch }` where caught `catch` includes `{ fishId, common, ascii, color, exp }`
-- `session.json` — active session: `{ version, fishermanId, fishermanName, activatedAt }`. Written by the `UserPromptSubmit` hook and by `/gone-fishing` on explicit invocation.
+- `session.json` — active session: `{ version, fishermanId, fishermanName, activatedAt, lastAnnouncedCatchAt? }`. Written by the `UserPromptSubmit` hook and by `/gone-fishing` on explicit invocation. `lastAnnouncedCatchAt` is set to `caughtAt` when the hook injects a catch announcement, preventing duplicate announcements across turns.
 - All writes are atomic: write to `.tmp`, then rename.
