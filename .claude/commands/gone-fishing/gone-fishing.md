@@ -45,18 +45,16 @@ The `"active"` field marks that `/gone-fishing` has been invoked in the current 
 
 Idle state:
 ```json
-{ "version": 1, "fishermanId": "<id>", "fishermanName": "<Name>", "state": "idle", "active": true, "animStartAt": 0, "catch": null }
+{ "version": 1, "fishermanName": "<Name>", "state": "idle", "active": true, "catch": null }
 ```
 
-Caught state (write `animStartAt` as current Unix seconds so the statusline can animate hooking→retrieving→display by elapsed time):
+Caught state:
 ```json
 {
   "version": 1,
-  "fishermanId": "<id>",
   "fishermanName": "<Name>",
   "state": "caught",
   "active": true,
-  "animStartAt": <unix_seconds>,
   "catch": { "fishId": "<id>", "common": "<common>", "ascii": "<ascii>", "color": <color>, "exp": <exp> }
 }
 ```
@@ -83,17 +81,6 @@ After every conversation turn completes, you MUST:
    ```
    🎣 Fish on the line!  <Common Name>  <ascii>  (+<exp> EXP)
    ```
-
-## Animation
-
-The statusline script reads `state.json` on every tick and picks the frame to render:
-
-- `state: "idle"` → idle frame
-- `state: "caught"`, `elapsed < 2s` → hooking frame
-- `state: "caught"`, `2s ≤ elapsed < 4s` → retrieving frame
-- `state: "caught"`, `elapsed ≥ 4s` → display frame (fish held up with name and EXP)
-
-`elapsed = now - animStartAt`. No background process is needed — the statusline polling drives the animation.
 
 ## Error handling
 
