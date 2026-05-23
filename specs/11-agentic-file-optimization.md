@@ -127,6 +127,41 @@ The statusline shows `~~*~~` if `session.json` exists and `activatedAt` is withi
 
 ---
 
+### 7. Auto-activate fishing via `UserPromptSubmit` hook
+
+**The problem:** After running `/gone-fishing` once to assign a fisherman, the user must re-run it at the start of every new session. There is no mechanism to persist the "fishing is active" intent across sessions without user action.
+
+**Proposed change:**
+
+Install a `UserPromptSubmit` hook (`~/.claude/hooks/gone-fishing-session.sh`) that fires before every user message. The hook:
+
+1. Exits silently if `profile.json` does not exist (user has never fished)
+2. Reads `session.json`; if `activatedAt` is less than 8 hours old, outputs the activation notice and exits
+3. Otherwise, reads `fishermanId` from `profile.json`, resolves the name from `fishermen.json`, writes a fresh `session.json`, and outputs the activation notice
+
+The activation notice injected into the conversation:
+```
+[gone-fishing] <Name> is on the line. Apply the per-turn catch roll after responding.
+```
+
+Claude Code injects this as context before processing the user's message, so Claude knows fishing is active and applies the catch roll without the user typing `/gone-fishing`.
+
+**Interaction with item 6:**
+
+The hook is the primary writer of `session.json`. `/gone-fishing` also writes `session.json` when invoked explicitly (first run, or to show the intro card again). The statusline reads `session.json.activatedAt` to determine the `~~*~~` vs `~~~~~` glyph — the same file the hook writes, so the statusline shows active from the first message of every session.
+
+**Impact:**
+- First ever run: user runs `/gone-fishing` once to get a fisherman assigned and see the intro card
+- Every subsequent session: hook fires automatically, writes `session.json`, activates fishing invisibly
+- `/gone-fishing` remains invocable if the user wants to force the intro card or re-assign a fisherman
+- Token cost: ~15 tokens per message (the injected activation notice); acceptable given it replaces the 150-token idle write step
+
+**Install changes:**
+- `scripts/install.sh` copies `scripts/gone-fishing-session-hook.sh` to `~/.claude/hooks/gone-fishing-session.sh`
+- `install.sh` adds a `UserPromptSubmit` hook entry to `~/.claude/settings.json` pointing at that script
+
+---
+
 ## Acceptance Criteria
 
 - [ ] ARCHITECTURE.md contains no "Current state" paragraphs; spec statuses are authoritative.
@@ -139,3 +174,8 @@ The statusline shows `~~*~~` if `session.json` exists and `activatedAt` is withi
 - [ ] `state.json` schema drops the `active` field; `session.json` is written once at activation.
 - [ ] Statusline renders idle frame when `state == "caught"` and `elapsed >= 10s` without a file read/write.
 - [ ] `/gone-fishing` writes `session.json`; statusline uses `activatedAt` timestamp for active-glyph logic.
+- [ ] `~/.claude/hooks/gone-fishing-session.sh` installed by `scripts/install.sh`; fires on every `UserPromptSubmit`.
+- [ ] Hook exits silently when `profile.json` is absent (user has never fished).
+- [ ] Hook writes `session.json` on session start and injects `[gone-fishing] <Name> is on the line...` notice.
+- [ ] Hook reuses existing `session.json` if `activatedAt` is less than 8 hours old.
+- [ ] `settings.json` has a `UserPromptSubmit` hook entry pointing at the hook script after install.
