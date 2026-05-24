@@ -1276,6 +1276,17 @@
     "flavor": "Federally threatened; summers feeding in Gulf shallows, winters fasting in freshwater rivers — a living relic of the Cretaceous."
   },
   {
+    "id": "striped-mullet",
+    "common": "Striped Mullet",
+    "scientific": "Mugil cephalus",
+    "habitat": "brackish",
+    "rarity": "uncommon",
+    "ascii": "><((·º>",
+    "color": 250,
+    "exp": 52,
+    "flavor": "A Louisiana staple — leaping mullet announce themselves before the hook. Prized as baitfish, smoked as table fare, and cast-netted by the bushel in every tidal pass from Barataria to Calcasieu."
+  },
+  {
     "id": "red-drum",
     "common": "Red Drum",
     "scientific": "Sciaenops ocellatus",
