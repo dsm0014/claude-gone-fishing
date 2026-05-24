@@ -1,6 +1,6 @@
 # Spec 12 — Shell Catch Hook
 
-**Status:** IN PROGRESS
+**Status:** `DONE`
 
 **Depends on:** [Spec 03 — Catch Probability](./03-catch-probability.md), [Spec 06 — Persistence Layer](./06-persistence.md), [Spec 08 — Leveling System](./08-leveling-system.md)
 
@@ -26,15 +26,15 @@ Move the per-turn catch roll entirely out of Claude into a bash `Stop` hook. Cla
 
 ## Acceptance Criteria
 
-- [ ] `scripts/gone-fishing-catch-hook.sh` exists in the repo and is deployed by `install.sh` to `~/.claude/hooks/gone-fishing-catch.sh`
-- [ ] `~/.claude/settings.json` contains a `Stop` hook entry pointing at `gone-fishing-catch.sh` after install
-- [ ] Hook exits silently (no output, no file I/O) when `session.json` is absent or `activatedAt` is older than 4 hours
-- [ ] Hook exits silently when `profile.json` is absent
-- [ ] Observed catch rate over 50+ turns approximates 10%
-- [ ] Fish selection applies rarity × time-of-day × season weights per Spec 03
-- [ ] `state.json` is written atomically with correct fields on a catch turn
-- [ ] `catches.json` is appended atomically with correct fields on a catch turn
-- [ ] No-catch turns produce zero file I/O
-- [ ] Catch notification prints to terminal stdout; no Claude system-reminder is emitted
-- [ ] Level-up writes `levelUpTo` and `levelUpTier` to `state.json`; statusline surfaces it; no inline conversation text
-- [ ] `gone-fishing.md` contains no per-turn catch roll instructions or inline level-up notification text
+- [x] `scripts/gone-fishing-catch-hook.sh` exists in the repo and is deployed by `install.sh` to `~/.claude/hooks/gone-fishing-catch.sh`
+- [x] `~/.claude/settings.json` contains a `Stop` hook entry pointing at `gone-fishing-catch.sh` after install
+- [x] Hook exits silently (no output, no file I/O) when `session.json` is absent or `activatedAt` is older than 4 hours
+- [x] Hook exits silently when `profile.json` is absent
+- [x] Observed catch rate over 50+ turns approximates 10%
+- [x] Fish selection applies rarity × time-of-day × season weights per Spec 03
+- [x] `state.json` is written atomically with correct fields on a catch turn
+- [x] `catches.json` is appended atomically with correct fields on a catch turn
+- [x] No-catch turns produce zero file I/O
+- [x] Catch notification prints to terminal stdout; no Claude system-reminder is emitted
+- [x] Level-up writes `levelUpTo` and `levelUpTier` to `state.json`; statusline surfaces it; no inline conversation text
+- [x] `gone-fishing.md` contains no per-turn catch roll instructions or inline level-up notification text
