@@ -63,7 +63,7 @@ Three user-facing slash commands are defined as Markdown files in `.claude/comma
 
 Two JSON files are bundled with the skill and deployed to `~/.claude/commands/refs/gone-fishing/`:
 
-- **`fish.json`** — 100+ catchable species. See [[fish-database]] and [[southeast-louisiana-fish]].
+- **`fish.json`** — 100+ catchable species. See [[fish-database]].
 - **`fishermen.json`** — 40 playable characters. See [[fisherman-roster]].
 
 ## Hook Registration

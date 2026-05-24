@@ -2,7 +2,7 @@
 
 **Tags:** optimization, hooks, token-cost, session, UserPromptSubmit
 
-**Spec:** 11 — Status: partially implemented (items 1–5, 7 done; items 6a/6b in progress)
+**Spec:** 11 — Status: fully implemented
 
 Cross-cutting optimization across all skill files. The goal is to reduce per-conversation and per-invocation token overhead without losing information Claude needs to operate correctly.
 
@@ -30,9 +30,9 @@ Added a broad `Read` allowlist for `~/.claude/commands/refs/gone-fishing/**` so 
 - The statusline handles caught→idle transitions autonomously via the 120-second `caughtAt` elapsed check — no Claude write needed.
 - `session.json` is written once per session by the `UserPromptSubmit` hook, not re-written on every turn.
 
-**Still open:**
-- `gone-fishing.md` still contains a no-catch idle write step.
-- The statusline does not yet do elapsed-based expiry (this is implemented in `install.sh`'s inlined statusline script, contradicting the spec status).
+**Completed:**
+- The statusline does elapsed-based expiry via the inlined script in `install.sh` — no Claude write needed on no-catch turns.
+- `gone-fishing.md`'s `state.json` write is scoped to activation only, not per-turn.
 
 ### UserPromptSubmit Session Hook (complete)
 
