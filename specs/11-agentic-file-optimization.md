@@ -1,6 +1,6 @@
 # Spec 11 — Agentic File Optimization
 
-**Status:** `COMPLETE`
+**Status:** `DONE`
 **Depends on:** All existing specs (cross-cutting concern)
 
 ## Goal
