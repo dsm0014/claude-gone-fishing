@@ -8,7 +8,7 @@ All feature specs for `claude-gone-fishing`. Statuses: `TODO` | `IN PROGRESS` | 
 | 02 | [Animation System](./02-animation-system.md) | TODO |
 | 03 | [Catch Probability](./03-catch-probability.md) | IN PROGRESS |
 | 04 | [Fish Database](./04-fish-database.md) | DONE |
-| 05 | [Fishing Stats Command](./05-fishing-stats-command.md) | IN PROGRESS |
+| 05 | [Fishing Stats Command](./05-fishing-stats-command.md) | DONE |
 | 06 | [Persistence Layer](./06-persistence.md) | DONE |
 | 07 | [Fisherman Roster](./07-fisherman-roster.md) | IN PROGRESS |
 | 08 | [Leveling System](./08-leveling-system.md) | TODO |
