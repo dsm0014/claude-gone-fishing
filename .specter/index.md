@@ -1,0 +1,15 @@
+# Specter Knowledge Base
+
+| slug | title | summary | tags | path |
+|------|-------|---------|------|------|
+| architecture-overview | Claude Gone Fishing — Architecture Overview | High-level map of how the skill's commands, hooks, data files, and statusline interact to deliver a per-turn fishing minigame inside Claude Code. | architecture, overview, hooks, persistence, statusline | architecture/architecture-overview.md |
+| gone-fishing-command | /gone-fishing Command | The slash command that activates the fishing overlay, assigns a character on first run, and defines the per-turn catch hook lifecycle. | command, activation, session, per-turn, hook | specs/gone-fishing-command.md |
+| animation-system | Animation System and Statusline Glyphs | Defines the three statusline glyph states, fish color rendering via ANSI 256-color, and the state.json fields that drive the status bar. | animation, statusline, ANSI, glyphs, state | specs/animation-system.md |
+| catch-probability | Catch Probability and Fish Selection | Specifies the 10% flat catch chance, weighted fish selection algorithm, time-of-day periods, and seasonal habitat multipliers. | probability, algorithm, rarity, time-of-day, season | specs/catch-probability.md |
+| fish-database | Fish Database (fish.json) | Schema, rarity distribution, ASCII art and color guidelines for the 100+ species pool, including the Southeast Louisiana regional batch. | fish, database, schema, rarity, ASCII art | specs/fish-database.md |
+| fishing-stats-command | /fishing-stats Command | The slash command that renders the fisherman's full profile, level, EXP bar, lifetime catch totals, rarity breakdown, top catches, and recent catches. | command, stats, display, level, history | specs/fishing-stats-command.md |
+| persistence-layer | Persistence Layer | Defines the four JSON files that store all minigame state, their schemas, atomic write rules, and corruption handling. | persistence, JSON, schema, atomic-write, state | specs/persistence-layer.md |
+| fisherman-roster | Fisherman Roster Schema | Schema, frame dimensions, visual differentiation rules, and the type field for the 40-entry fishermen.json character pool. | fishermen, schema, animation-frames, characters, roster | specs/fisherman-roster.md |
+| leveling-system | Leveling System | 50-level linear EXP progression, rod tier color upgrades every 5 levels, statusline integration, and EXP bar format for /fishing-stats. | leveling, EXP, rod-tier, progression, statusline | specs/leveling-system.md |
+| shell-catch-hook | Shell Catch Hook (Stop Hook) | The bash Stop hook that performs the per-turn catch roll, weighted fish selection, atomic file writes, and catch notification entirely outside Claude. | hook, bash, Stop, catch-roll, automation | specs/shell-catch-hook.md |
+| agentic-file-optimization | Agentic File Optimization | Cross-cutting optimization that reduced always-loaded context by 34%, eliminated per-turn idle writes, introduced the UserPromptSubmit session hook, and moved the catch roll to a Stop hook. | optimization, hooks, token-cost, session, UserPromptSubmit | specs/agentic-file-optimization.md |
