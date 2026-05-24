@@ -1,6 +1,6 @@
 # Spec 05 — /fishing-stats Command
 
-**Status:** `IN PROGRESS`
+**Status:** `DONE`
 **Depends on:** [06 Persistence Layer](./06-persistence.md), [04 Fish Database](./04-fish-database.md), [07 Fisherman Roster](./07-fisherman-roster.md), [08 Leveling System](./08-leveling-system.md)
 
 ---
