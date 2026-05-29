@@ -81,7 +81,10 @@ selected_fish=$(jq -c \
 
 [ -n "$selected_fish" ] && [ "$selected_fish" != "null" ] || exit 0
 
-mapfile -t _f < <(echo "$selected_fish" | jq -r '.id, .common, .ascii, (.color|tostring), (.exp|tostring), .rarity')
+_f=()
+while IFS= read -r line; do
+  _f+=("$line")
+done < <(echo "$selected_fish" | jq -r '.id, .common, .ascii, (.color|tostring), (.exp|tostring), .rarity')
 fish_id="${_f[0]:-}"
 fish_common="${_f[1]:-}"
 fish_ascii="${_f[2]:-}"
